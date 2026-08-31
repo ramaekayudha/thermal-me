@@ -1,10 +1,11 @@
-/* THERMAL ME — Service Worker (v5)
+/* THERMAL ME — Service Worker (v1.5)
    Cache-first, sepenuhnya offline setelah kunjungan pertama.
    Nama cache wajib dinaikkan setiap kali index.html berubah —
-   cache lama otomatis dihapus agar versi lama tidak tersajikan. */
+   cache lama otomatis dihapus agar versi lama tidak tersajikan.
+   Penamaan mengikuti versi aplikasi: V1.6 berikutnya, dst. */
 'use strict';
 
-const CACHE = 'thermalme-v5';
+const CACHE = 'thermalme-v1.5';
 const ASET = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {

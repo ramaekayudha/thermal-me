@@ -293,7 +293,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
   <header id="topbar">
     <div class="brand-wrap">
       <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FF5C29"/><path fill="#16130F" d="M9 4h14v19l-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4z"/><g stroke="#F5EFE2" stroke-width="2.2" stroke-linecap="round"><path d="M12 10h8M12 14.5h8"/></g><path d="M12 19h5" stroke="#FF5C29" stroke-width="2.2" stroke-linecap="round"/></svg>
-      <span class="brand">THERMAL ME</span><span class="versi">v5</span>
+      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.5</span>
     </div>
     <nav id="navTabs">
       <button data-view="desain">Desain</button>
@@ -372,8 +372,14 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 'use strict';
 (() => {
 /* =====================================================================
-   THERMAL ME — v5 (ukuran 2x tinggi / 2x lebar, perataan logo,
-   footer aplikasi)
+   THERMAL ME — v1.5
+   Perubahan dari v5:
+   - lebar logo kini bisa diedit bebas (10–100%) + preset cepat
+   - penomoran versi resmi: V1.5 (konstanta tunggal APP_VERSI,
+     penambahan berikutnya V1.6, dst.)
+   - pratinjau tidak pernah tampil kosong: seluruh UI dan pratinjau
+     dirender sinkron SEBELUM shell ditampilkan (masukApp) dan sebelum
+     overlay mobile dibuka (bukaPratinjauMobile)
    Aturan keamanan di seluruh file ini:
    1. String pengguna HANYA masuk lewat .textContent / .value / atribut
       aman — tidak pernah lewat innerHTML (kecuali SVG statis kode sendiri).
@@ -386,6 +392,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
       dan semua ID diregenerasi — berkas asing tidak dipercaya.
 ===================================================================== */
 
+const APP_VERSI = 'V1.5';
 const ITER = 600000;
 const MM = 96 / 25.4;
 const DBNAME = 'thermalme';
@@ -1456,7 +1463,7 @@ function cetakPilih(lines, lebar, font){
     : baris('Printer Serial', 'Pilih port RS232/USB-serial (Chrome desktop)', 'SAMBUNG',
       async () => { if (await serSambung()) await cetakLangsung('ser', lines, lebar, font); }));
   kartu.append(wadah,
-    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, dan logo persis seperti pratinjau.'));
+    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, ukuran 2x, dan logo persis seperti pratinjau.'));
   modalHasil(() => { tutupModal(); });
   bukaModal(kartu);
 }
@@ -1622,7 +1629,7 @@ function migrasiTemplat(t){
     if (b.type === 'spasi') b.baris = clampInt(b.baris, 0, 20);
     if (b.type === 'ttd'){ b.label = String(b.label ?? '').slice(0, 30); b.baris = clampInt(b.baris, 1, 8); }
     if (b.type === 'logo'){
-      b.lebar = clampInt(b.lebar || 100, 20, 100);
+      b.lebar = clampInt(b.lebar || 100, 10, 100);
       if (typeof b.gambar !== 'string' || !b.gambar.startsWith('data:image/') || b.gambar.length > 400000) delete b.gambar;
       b.rasio = num(b.rasio) || 0.35;
       b.posisi = posLogo(b.posisi);
@@ -1701,7 +1708,7 @@ function ringkasBlok(b){
     case 'teks':    return (String(b.isi || '').split('\n')[0] || '(kosong)').slice(0, 26);
     case 'field':   return (b.baris || []).length + ' baris';
     case 'item':    return 'tabel item';
-    case 'logo':    return b.gambar ? (clampInt(b.lebar || 100, 20, 100) + '% · ' + posLogo(b.posisi)) : 'belum ada gambar';
+    case 'logo':    return b.gambar ? (clampInt(b.lebar || 100, 10, 100) + '% · ' + posLogo(b.posisi)) : 'belum ada gambar';
     case 'total':   return [b.diskonMode !== 'tanpa' ? 'diskon' : null, b.pajakMode !== 'tanpa' ? 'pajak' : null, b.tampilBayar ? 'bayar' : null].filter(Boolean).join(' · ') || 'subtotal saja';
     case 'nomor':   return b.format || '';
     case 'tanggal': return b.format || '';
@@ -1815,13 +1822,29 @@ function badanBlok(tpl, b){
       if (typeof b.gambar === 'string' && b.gambar){
         pratinjau.append(h('img', { src: b.gambar, alt: 'logo', style: { maxWidth: '100%', maxHeight: '90px' } }));
       } else pratinjau.append(h('span', { class: 'sub' }, 'Belum ada gambar — unggah logo toko/brand Anda'));
+      /* ukuran logo: preset cepat + input kustom 10–100% */
+      const inpLebar = h('input', { class: 'inp', type: 'number', min: 10, max: 100, step: 1,
+        value: clampInt(b.lebar || 100, 10, 100), style: { width: '90px' },
+        title: 'Lebar kustom dalam persen (10–100)' });
+      inpLebar.addEventListener('change', e => {
+        b.lebar = clampInt(e.target.value, 10, 100);
+        e.target.value = b.lebar;
+        ubahTemplat(tpl);
+        renderDesain(); // segarkan agar sorotan preset ikut akurat
+      });
       badan.append(fileInp, pratinjau,
         h('div', { class: 'aksi-baris' },
           h('button', { class: 'btn sm', onclick: () => fileInp.click() }, ikonEl('pasang', 14), b.gambar ? 'Ganti Gambar' : 'Unggah Gambar'),
           b.gambar ? h('button', { class: 'btn sm d', onclick: () => { delete b.gambar; ubahTemplat(tpl); renderDesain(); } }, ikonEl('sampah', 14), 'Hapus Logo') : null),
-        L('Lebar logo (dari lebar kertas)', seg([{ v: 40, l: '40%' }, { v: 60, l: '60%' }, { v: 80, l: '80%' }, { v: 100, l: '100%' }], clampInt(b.lebar || 100, 20, 100), v => { b.lebar = v; ubahTemplat(tpl); })),
+        L('Lebar logo (dari lebar kertas)',
+          h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' } },
+            seg([{ v: 40, l: '40%' }, { v: 60, l: '60%' }, { v: 80, l: '80%' }, { v: 100, l: '100%' }], clampInt(b.lebar || 100, 10, 100),
+              v => { b.lebar = v; inpLebar.value = String(v); ubahTemplat(tpl); }),
+            h('span', { class: 'sub' }, 'Kustom:'),
+            inpLebar,
+            h('span', { class: 'sub' }, '%'))),
         L('Perataan logo', seg([{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }], posLogo(b.posisi), v => { b.posisi = v; ubahTemplat(tpl); })),
-        h('p', { class: 'bantuan' }, 'PNG/JPG, maks 2MB — otomatis dikecilkan dan disimpan terenkripsi di brankas. Saat cetak langsung, gambar dihitam-putihkan dengan dither Floyd–Steinberg agar rapi di kertas termal. Perataan berlaku di pratinjau, dialog sistem, dan cetak langsung.'));
+        h('p', { class: 'bantuan' }, 'PNG/JPG, maks 2MB — otomatis dikecilkan dan disimpan terenkripsi di brankas. Lebar bisa angka bebas 10–100% (tinggi mengikuti rasio gambar). Saat cetak langsung, gambar dihitam-putihkan dengan dither Floyd–Steinberg agar rapi di kertas termal.'));
       break;
     }
     case 'field': {
@@ -2616,10 +2639,14 @@ async function muatSemua(){
 function masukApp(){
   S.terbuka = true;
   if (S.tick){ clearInterval(S.tick); S.tick = null; }
+  $('#inpPassBuka').value = '';
+  /* PENTING: seluruh UI + pratinjau dirender SINKRON lebih dulu;
+     shell baru ditampilkan setelah kertas berisi. Ini menghilangkan
+     kilatan kertas kosong yang tadinya muncul saat pertama masuk. */
+  setView('desain');
+  renderPreview();
   $('#layarAuth').hidden = true;
   $('#shell').hidden = false;
-  $('#inpPassBuka').value = '';
-  setView('desain');
   sambungOtomatisSemua();
 }
 async function kunci(manual){
@@ -2695,7 +2722,7 @@ function setView(v){
 function bukaPratinjauMobile(){
   $('#previewOverlay').hidden = false;
   $('#ovScroll').append($('#paperWrap'));
-  mintaPratinjau();
+  renderPreview(); // sinkron: kertas sudah berisi saat overlay terlihat
 }
 function tutupPratinjauMobile(){
   if ($('#previewOverlay').hidden) return;
@@ -2818,6 +2845,7 @@ function daftarSW(){
 (async function boot(){
   ikatKejadian();
   initPrinter();
+  $('#versiApp').textContent = APP_VERSI;
   $('#pvZoomVal').textContent = '×' + (1.15).toFixed(2);
   $$('.footYear').forEach(el => { el.textContent = String(new Date().getFullYear()); });
   try {
