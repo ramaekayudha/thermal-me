@@ -1,6 +1,6 @@
 ================================================================
   THERMAL ME — PEMBUAT RESI, STRUK & NOTA KUSTOM
-  Versi     : V1.8
+  Versi     : V1.9
   Jenis     : PWA (Progressive Web App) — 100% offline
   Alamat    : https://ramaekayudha.github.io/thermal-me/
   Copyright : (c) 2025 · Design by Rama Eka Yudha
@@ -19,32 +19,31 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
 2. FITUR UTAMA
 ----------------------------------------------------------------
 - Resi berbasis BLOK susun bebas: teks, logo, field data, tabel
-  item, total (diskon/pajak/pembulatan/bayar/kembali), nomor urut
-  otomatis, tanggal, garis, spasi, area tanda tangan.
-- Templat siap pakai: Struk Toko, Nota, Resi Pengiriman, atau
-  kosong. Duplikat, ganti nama, ekspor/impor (opsional terenkripsi).
-- Teks: font A/B, Kecil/Normal/2x Tinggi/2x Lebar/Besar(2x2),
-  tebal, garis bawah, rata kiri/tengah/kanan/JUSTIFY.
-- Field Data: rata kiri/tengah/kanan/justify; tata letak 1/2/3
-  kolom (beberapa field sebaris di kertas); titik dua diketik
-  manual di label (tidak ditambah otomatis).
-- Nomor urut: format token kustom, bisa diedit, mode 1 baris
-  (justify) atau 2 baris.
-- Tanggal: rata kiri/tengah/kanan/justify.
-- Logo resi: PNG/JPG, ukuran bebas 10-100%, rata kiri/tengah/kanan,
-  dicetak dengan dither Floyd-Steinberg di printer termal.
-- Logo resmi aplikasi (logo.png, latar putih 512x512): tampil
-  sebagai ubin membulat rapi di mode terang & gelap; favicon,
-  ikon PWA/Android/iOS; di-cache offline.
+  item, total, nomor urut otomatis, tanggal, garis, spasi,
+  tanda tangan.
+- GAYA TULISAN di semua blok bertulisan: rata kiri/tengah/kanan/
+  justify, ukuran Kecil/Normal/2x Tinggi/2x Lebar/2x2 (Double
+  Size)/MEGA 3x3, Tebal, Miring — pratinjau, dialog sistem, dan
+  ESC/POS konsisten (Miring & Mega di printer tergantung
+  dukungan ESC 4/5 dan GS !).
+- Field Data: 1/2/3 kolom (3 kolom kini berfungsi di 58mm),
+  perataan 4 arah, titik dua manual.
+- Nomor urut: format token kustom, bisa diedit, 1 baris
+  (justify) / 2 baris, perataan & gaya lengkap.
+- Tanggal, Tabel Item, Total, Tanda Tangan: gaya lengkap.
+- Logo resi: ukuran bebas 10-100%, rata 3 arah, dither
+  Floyd-Steinberg di printer termal.
+- Logo resmi aplikasi (512x512, latar putih): tampil BULAT
+  (lingkaran) di kartu login & bilah atas, kedua mode.
+- Templat siap pakai: Struk, Nota, Resi Kirim, Kosong;
+  duplikat, ekspor/impor (opsional terenkripsi).
 - Riwayat terenkripsi: cari, cetak ulang, duplikat, batalkan,
   hapus satuan/terpilih/sekaligus.
-- Simpan otomatis (terlihat di footer) + cadangan otomatis harian
-  terenkripsi + pulihkan cadangan.
-- Mode terang (ultra clean, default) dan mode gelap.
-- Font UI: sans-serif sistem 13px. Pratinjau kertas & hasil cetak
-  tetap monospace — cermin grid karakter printer 1:1.
-- Keamanan: kunci idle, ganti passphrase, pembatasan percobaan,
-  koneksi printer terputus saat brankas dikunci.
+- Simpan otomatis + cadangan otomatis harian terenkripsi +
+  pulihkan cadangan.
+- Mode terang (default) & gelap. UI sans-serif 13px; kertas
+  pratinjau & cetak tetap monospace (cermin grid printer).
+- Keamanan: kunci idle, ganti passphrase, pembatasan percobaan.
 
 ----------------------------------------------------------------
 3. ISI PAKET
@@ -54,30 +53,27 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
   manifest.json       : konfigurasi PWA (installable)
   logo.png            : logo resmi (latar putih, 512x512)
   readme.txt          : file ini
-  privacy-policy.html : kebijakan privasi (untuk publikasi)
+  privacy-policy.html : kebijakan privasi (publikasi)
   .well-known/        : verifikasi aplikasi Android (TWA)
   .nojekyll           : penanda GitHub Pages
 
 ----------------------------------------------------------------
 4. MENJALANKAN LOKAL
 ----------------------------------------------------------------
-Wajib lewat localhost/HTTPS (bukan file://) karena fitur kripto,
-service worker, dan printer membutuhkan konteks aman.
+Wajib lewat localhost/HTTPS (bukan file://).
 
   python -m http.server 8000   ->  buka http://localhost:8000
-  (atau: npx serve)
 
 ----------------------------------------------------------------
 5. DEPLOY
 ----------------------------------------------------------------
 - GitHub Pages : push repo -> Settings -> Pages -> Deploy from
-  branch: main / (root). HTTPS otomatis aktif.
+  branch: main / (root).
 - Netlify Drop : seret folder ke app.netlify.com/drop
-- cPanel       : upload semua file ke public_html, aktifkan SSL.
+- cPanel       : upload semua file ke public_html + SSL.
 
-PENTING: data brankas terikat pada ALAMAT aplikasi. Pindah domain
-= brankas baru. Gunakan Cadangkan & Pulihkan untuk memindahkan
-data antar perangkat/domain.
+PENTING: data brankas terikat ALAMAT aplikasi. Pindah domain =
+brankas baru. Gunakan Cadangkan & Pulihkan.
 
 ----------------------------------------------------------------
 6. DUKUNGAN PRINTER
@@ -88,42 +84,31 @@ data antar perangkat/domain.
   WiFi/LAN & semua  : lewat "Printer Sistem" (dialog cetak OS)
   printer berdriver
 
-Catatan: printer Bluetooth klasik (SPP) tidak dapat diakses
-browser — pakai port USB-nya. Di Windows, USB bisa gagal bila
-driver sistem sedang memegang printer. Printer termal murah
-umumnya mengerti dialek ESC/POS. Printer non-termal (inkjet/laser)
-gunakan jalur Printer Sistem.
+Printer Bluetooth klasik (SPP) tidak dapat diakses browser — pakai
+port USB-nya. Printer non-termal gunakan jalur Printer Sistem.
 
 ----------------------------------------------------------------
 7. KEAMANAN DATA
 ----------------------------------------------------------------
-- At-rest: AES-256-GCM; kunci diturunkan dari passphrase dengan
-  PBKDF2-SHA256 600.000 iterasi, hanya hidup di memori sesi.
+- At-rest: AES-256-GCM; kunci PBKDF2-SHA256 600.000 iterasi,
+  hanya hidup di memori sesi.
 - Nol telemetry: tidak ada data keluar dari perangkat.
-- Preferensi tema disimpan polos di localStorage (isinya hanya
-  kata "terang"/"gelap" — bukan data sensitif).
+- Preferensi tema di localStorage (isinya hanya "terang"/"gelap").
 - Passphrase brankas hilang = data tidak dapat dipulihkan.
-  Cadangan terenkripsi adalah jaring pengaman.
 
 ----------------------------------------------------------------
 8. VERSI
 ----------------------------------------------------------------
-Penomoran: V1.5, V1.6, V1.7, ... (naik satu per rilis; nama cache
-service worker ikut dinaikkan agar pembaruan otomatis).
-
   V1.5 : ukuran logo kustom, perbaikan render awal
-  V1.6 : pra-login bersih, mode terang/gelap, cadangan otomatis
-         + pulihkan, justify teks, nomor urut 1/2 baris,
-         perataan tanggal
+  V1.6 : pra-login bersih, terang/gelap, cadangan + pulihkan,
+         justify teks, nomor 1/2 baris, perataan tanggal
   V1.7 : logo resmi aplikasi (favicon, layar awal, bilah atas,
-         ikon PWA/install)
-  V1.8 : Field Data — perataan 4 arah, titik dua manual,
-         tata letak 2/3 kolom; font UI baru sans-serif 13px;
-         tampilan logo ubin membulat untuk latar putih
-
-PERUBAHAN V1.8 YANG PERLU DIKETAHUI: titik dua pada Field Data
-tidak lagi ditambahkan otomatis. Templat lama tampil tanpa ":" —
-ketik sendiri di label (mis. "Nama:") bila ingin seperti dulu.
+         ikon PWA)
+  V1.8 : field rata 4 arah & titik dua manual, 2-3 kolom (bug di
+         58mm), font UI sans 13px
+  V1.9 : FIX 3 kolom di 58mm (ambang & celah dikoreksi); gaya
+         lengkap (tebal/miring/2x/2x2/Mega 3x3/rata) di semua
+         blok bertulisan; logo bulat
 
 ================================================================
   Copyright (c) 2025 · Design by Rama Eka Yudha
