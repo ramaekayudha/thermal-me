@@ -1,9 +1,9 @@
 ================================================================
   THERMAL ME — PEMBUAT RESI, STRUK & NOTA KUSTOM
-  Versi     : V1.10
+  Versi     : V1.11
   Jenis     : PWA (Progressive Web App) — 100% offline
   Alamat    : https://ramaekayudha.github.io/thermal-me/
-  Copyright : (c) 2026 · Design by Rama Eka Yudha
+  Copyright : (c) 2025 · Design by Rama Eka Yudha
   Kontak    : yudha.ramaeka@gmail.com
 ================================================================
 
@@ -21,18 +21,20 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
 - Resi berbasis BLOK susun bebas: teks, logo, field data, tabel
   item, total, nomor urut otomatis, tanggal, garis, spasi,
   tanda tangan.
-- GAYA TULISAN di semua blok bertulisan: rata kiri/tengah/kanan/
-  justify, ukuran Kecil/Normal/2x Tinggi/2x Lebar/2x2 (Double
-  Size)/MEGA 3x3, Tebal, Miring — pratinjau, dialog sistem, dan
-  ESC/POS konsisten (Miring & Mega di printer tergantung
-  dukungan ESC 4/5 dan GS !).
-- Field Data: 1/2/3 kolom — tampil di kertas DAN di form tab
-  Isi Resi; perataan 4 arah; titik dua manual.
-- Nomor Urut: perataan 4 arah berlaku di mode 1 Baris & 2 Baris;
-  1 Baris + Justify = label kiri, nomor kanan; format token
+- Field Data: 1/2/3 KOLOM (= jumlah FIELD per baris di kertas)
+  dengan kotak "PRatinjau Tata Letak" langsung di editor —
+  diperbarui seketika & identik dengan hasil cetak; peringatan
+  otomatis bila jumlah field kurang dari jumlah kolom. Perataan
+  4 arah; titik dua manual.
+- GAYA TULISAN di semua blok bertulisan: rata 4 arah, ukuran
+  Kecil/Normal/2x Tinggi/2x Lebar/2x2 (Double Size)/MEGA 3x3,
+  Tebal, Miring — pratinjau, dialog sistem, dan ESC/POS konsisten
+  (Miring & Mega di printer tergantung dukungan).
+- Nomor Urut: perataan 4 arah di mode 1 & 2 baris; format token
   kustom, bisa diedit.
-- Tanggal: rata 4 arah; TANPA titik dua otomatis (ketik manual
-  di label bila ingin).
+- Tanggal: rata 4 arah; tanpa titik dua otomatis.
+- Spasi: langkah 0,5 — setengah baris sesungguhnya di pratinjau
+  & dialog cetak; di printer didekati ESC 3 (18/216 inci).
 - Logo resi: ukuran bebas 10-100%, rata 3 arah, dither
   Floyd-Steinberg di printer termal.
 - Logo resmi aplikasi (512x512, latar putih): tampil BULAT di
@@ -110,9 +112,17 @@ port USB-nya. Printer non-termal gunakan jalur Printer Sistem.
          UI sans 13px
   V1.9 : gaya lengkap (tebal/miring/2x/2x2/Mega 3x3/rata) di
          semua blok bertulisan; logo bulat
-  V1.10: FIX 3 kolom (form Isi Resi kini berkolom, guard
-         diturunkan); tanggal tanpa titik dua otomatis;
-         perataan nomor urut berfungsi di mode 1 & 2 baris
+  V1.10: 3 kolom aktif di 58mm (guard & celah dikoreksi), form
+         Isi Resi berkolom, tanggal tanpa titik dua, perataan
+         nomor urut di kedua mode
+  V1.11: kotak "Pratinjau Tata Letak" di editor Field Data
+         (identik dengan kertas, peringatan field kurang);
+         SPASI langkah 0,5 (setengah baris; ESC/POS: ESC 3)
+
+CATATAN KONSEP "KOLOM" (jawaban keluhan umum): "N Kolom" pada
+Field Data berarti N FIELD PER BARIS di kertas — satu field =
+label + nilai yang tetap satu baris. Mode N kolom butuh minimal
+N field; dengan 2 field, mode 3 Kolom hanya mengisi 2 kolom.
 
 ================================================================
   Copyright (c) 2025 · Design by Rama Eka Yudha
