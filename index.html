@@ -17,7 +17,10 @@
 <style>
 /* ============ TOKEN DESAIN ============ */
 /* Default: TERANG — Ultra Clean White.
-   class .gelap pada <html> mengganti seluruh token ke mode gelap. */
+   class .gelap pada <html> mengganti seluruh token ke mode gelap.
+   V1.8: font UI = sans-serif sistem (lebih kecil, 13px).
+   Kertas pratinjau & area cetak TETAP monospace — cermin grid
+   karakter printer 1:1 (jangan diganti). */
 :root{
   --bg:#F4F6F8; --bg2:#FFFFFF; --bg3:#EDF1F5; --inset:#F8FAFC;
   --bd:#E4E9F0; --bd2:#CBD4DF;
@@ -32,6 +35,7 @@
   --sh1:0 10px 30px rgba(23,32,48,.10);
   --sh2:0 24px 60px rgba(23,32,48,.18);
   --sh3:0 12px 26px rgba(23,32,48,.14);
+  --sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
   --mono:ui-monospace,'Cascadia Mono','JetBrains Mono',Menlo,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;
   color-scheme:light;
 }
@@ -54,7 +58,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--ac);color:var(--ac-ink)}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 *{scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
@@ -63,7 +67,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 ::-webkit-scrollbar-track{background:transparent}
 
 /* ============ KOMPONEN DASAR ============ */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--bd2);background:var(--bg3);color:var(--tx);font:inherit;font-weight:600;font-size:13px;border-radius:9px;padding:9px 14px;cursor:pointer;user-select:none;transition:border-color .15s,background .15s,transform .05s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--bd2);background:var(--bg3);color:var(--tx);font:inherit;font-weight:600;font-size:12.5px;border-radius:9px;padding:8px 13px;cursor:pointer;user-select:none;transition:border-color .15s,background .15s,transform .05s}
 .btn:hover{border-color:var(--ac)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled]{opacity:.45;cursor:default;transform:none}
@@ -72,22 +76,22 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .btn.d{border-color:var(--err-bd);color:var(--err)}
 .btn.d:hover{border-color:var(--err);background:var(--err-bg)}
 .btn.g{background:transparent}
-.btn.sm{padding:6px 10px;font-size:12px}
-.btn.ic{padding:7px}
+.btn.sm{padding:5px 10px;font-size:11.5px}
+.btn.ic{padding:6px}
 .btn.wide{width:100%}
-.inp{width:100%;background:var(--inset);border:1px solid var(--bd);color:var(--tx);border-radius:9px;padding:9px 11px;font:inherit}
+.inp{width:100%;background:var(--inset);border:1px solid var(--bd);color:var(--tx);border-radius:9px;padding:8px 10px;font:inherit}
 .inp:focus{border-color:var(--ac);outline:none;box-shadow:0 0 0 3px rgba(255,92,41,.16)}
-.lbl{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);font-weight:700;margin:0 0 6px}
-.sub{color:var(--tx2);font-size:12px;margin:0}
-.judul2{font-size:17px;font-weight:800;margin:0;letter-spacing:.02em}
-.cek{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--tx2);cursor:pointer;margin:10px 0}
+.lbl{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);font-weight:700;margin:0 0 5px}
+.sub{color:var(--tx2);font-size:11.5px;margin:0}
+.judul2{font-size:16px;font-weight:800;margin:0;letter-spacing:.02em}
+.cek{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;color:var(--tx2);cursor:pointer;margin:10px 0}
 .cek input{accent-color:var(--ac);margin-top:2px}
-.sek{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:0 0 14px}
-.sek-t{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx2);font-weight:800;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.taut{background:none;border:0;color:var(--tx2);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.sek{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:15px;margin:0 0 14px}
+.sek-t{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--tx2);font-weight:800;margin:0 0 11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.taut{background:none;border:0;color:var(--tx2);font:inherit;font-size:11px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px}
 .taut:hover{color:var(--ac2)}
-.taut.kecil{font-size:11px}
-.err{color:var(--err);font-size:12px;min-height:16px;margin:6px 0}
+.taut.kecil{font-size:10px}
+.err{color:var(--err);font-size:11.5px;min-height:16px;margin:6px 0}
 .meter{display:flex;gap:4px;margin:6px 0 2px}
 .meter i{height:4px;flex:1;background:var(--bd);border-radius:2px}
 .meter[data-n="1"] i:nth-child(1),
@@ -95,35 +99,38 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .meter[data-n="3"] i:nth-child(-n+3){background:var(--wr)}
 .meter[data-n="4"] i:nth-child(-n+4){background:var(--ok)}
 .seg{display:inline-flex;flex-wrap:wrap;background:var(--inset);border:1px solid var(--bd);border-radius:9px;padding:3px;gap:2px}
-.seg-b{border:0;background:transparent;color:var(--tx2);font:inherit;font-size:12px;font-weight:600;padding:5px 10px;border-radius:6px;cursor:pointer}
+.seg-b{border:0;background:transparent;color:var(--tx2);font:inherit;font-size:11px;font-weight:600;padding:4px 9px;border-radius:6px;cursor:pointer}
 .seg-b.on{background:var(--bg3);color:var(--ac2)}
-.baris-f{display:grid;grid-template-columns:1fr 1fr 34px;gap:6px;margin-bottom:6px}
+.baris-f{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px;margin-bottom:6px}
 
 /* ============ LAYAR AUTH ============ */
 #layarAuth{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .auth-kartu{position:relative;width:min(430px,100%);background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:30px 28px;box-shadow:var(--sh1)}
 .tema-auth{position:absolute;top:14px;right:14px;z-index:1}
 .brand-glyph{display:flex;justify-content:center;margin-bottom:14px}
-.logo-auth{height:72px;width:72px;object-fit:contain;filter:drop-shadow(0 3px 10px rgba(0,0,0,.16))}
-.auth-brand{text-align:center;font-weight:800;letter-spacing:.22em;font-size:19px;margin:0}
-.auth-tag{text-align:center;color:var(--tx2);font-size:12px;margin:6px 0 22px;letter-spacing:.06em}
+/* logo putih 512x512: ditampilkan sebagai ubin membulat ("app tile") —
+   di mode terang menyatu dengan kartu, di mode gelap tampil sebagai
+   ikon aplikasi putih yang disengaja. */
+.logo-auth{width:76px;height:76px;object-fit:cover;background:#fff;border:1px solid var(--bd);border-radius:18px;box-shadow:0 6px 18px rgba(23,32,48,.18)}
+.auth-brand{text-align:center;font-weight:800;letter-spacing:.22em;font-size:18px;margin:0}
+.auth-tag{text-align:center;color:var(--tx2);font-size:11.5px;margin:6px 0 22px;letter-spacing:.06em}
 .auth-form{display:block}
 .deco-bar{height:24px;margin:20px auto 14px;width:170px;opacity:.55;background:repeating-linear-gradient(90deg,var(--tx3) 0 2px,transparent 2px 6px,var(--tx3) 6px 7px,transparent 7px 12px)}
-.catatan{text-align:center;color:var(--tx3);font-size:11px;margin:0;line-height:1.6}
-.kredit{text-align:center;color:var(--tx3);font-size:10.5px;margin:12px 0 0;letter-spacing:.08em}
+.catatan{text-align:center;color:var(--tx3);font-size:10.5px;margin:0;line-height:1.6}
+.kredit{text-align:center;color:var(--tx3);font-size:10px;margin:12px 0 0;letter-spacing:.08em}
 .auth-alt{text-align:center;margin-top:14px}
 .goyang{animation:goyang .3s}
 @keyframes goyang{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 
 /* ============ KERANGKA UTAMA ============ */
 #shell{display:flex;flex-direction:column;height:100dvh}
-#topbar{display:flex;align-items:center;gap:14px;height:58px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--bd);flex:none}
-.brand-wrap{display:flex;align-items:center;gap:10px;min-width:0}
-.logo-top{height:26px;width:auto;max-width:72px;object-fit:contain;flex:none}
-.brand{font-weight:800;letter-spacing:.18em;font-size:13.5px;white-space:nowrap}
+#topbar{display:flex;align-items:center;gap:13px;height:56px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--bd);flex:none}
+.brand-wrap{display:flex;align-items:center;gap:9px;min-width:0}
+.logo-top{height:26px;width:26px;object-fit:cover;background:#fff;border:1px solid var(--bd);border-radius:7px;flex:none}
+.brand{font-weight:800;letter-spacing:.18em;font-size:12.5px;white-space:nowrap}
 .versi{font-size:9px;color:var(--tx3);border:1px solid var(--bd);padding:1px 7px;border-radius:99px;letter-spacing:.1em}
 #navTabs{display:flex;gap:2px;margin-left:auto}
-#navTabs button{background:none;border:0;color:var(--tx2);font:inherit;font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:8px;cursor:pointer}
+#navTabs button{background:none;border:0;color:var(--tx2);font:inherit;font-weight:700;font-size:12px;padding:8px 11px;border-radius:8px;cursor:pointer}
 #navTabs button.on{color:var(--tx);background:var(--bg3);box-shadow:inset 0 -2px 0 var(--ac)}
 #navTabs button:hover{color:var(--tx)}
 .top-aksi{display:flex;gap:8px;align-items:center}
@@ -133,19 +140,19 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .view{max-width:840px;margin:0 auto;padding:18px 20px 48px;width:100%}
 #panePreview{border-left:1px solid var(--bd);display:flex;flex-direction:column;min-height:0;background:var(--bg)}
 .pv-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--bd);flex:none;flex-wrap:wrap}
-.pv-title{font-size:10.5px;letter-spacing:.18em;color:var(--tx2);font-weight:800}
-.pv-info{font-size:11px;color:var(--tx3);flex:1;min-width:60px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-title{font-size:10px;letter-spacing:.18em;color:var(--tx2);font-weight:800}
+.pv-info{font-size:10.5px;color:var(--tx3);flex:1;min-width:60px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pv-zoom{display:flex;gap:4px;align-items:center}
-.pv-zoom button{border:1px solid var(--bd);background:var(--bg3);color:var(--tx2);border-radius:7px;width:26px;height:26px;display:grid;place-items:center;cursor:pointer;font:inherit}
+.pv-zoom button{border:1px solid var(--bd);background:var(--bg3);color:var(--tx2);border-radius:7px;width:25px;height:25px;display:grid;place-items:center;cursor:pointer;font:inherit}
 .pv-zoom button:hover{border-color:var(--ac);color:var(--tx)}
-.pv-zoom span{font-size:10.5px;color:var(--tx3);min-width:38px;text-align:center}
+.pv-zoom span{font-size:10px;color:var(--tx3);min-width:38px;text-align:center}
 #pvScroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:18px 12px 60px}
 
 /* ---- footer aplikasi ---- */
-#appFooter{position:sticky;bottom:0;z-index:5;flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--bg);border-top:1px solid var(--bd);color:var(--tx3);font-size:10.5px;letter-spacing:.09em}
-.foot-status{font-size:10px;letter-spacing:.05em;white-space:nowrap}
+#appFooter{position:sticky;bottom:0;z-index:5;flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 16px;background:var(--bg);border-top:1px solid var(--bd);color:var(--tx3);font-size:10px;letter-spacing:.09em}
+.foot-status{font-size:9.5px;letter-spacing:.05em;white-space:nowrap}
 
-/* ---- kertas termal ---- */
+/* ---- kertas termal (TETAP monospace: cermin grid printer) ---- */
 .printer-slot{height:18px;border-radius:9px;background:var(--slot);box-shadow:inset 0 2px 6px rgba(0,0,0,.8),0 1px 0 var(--bd);position:relative;z-index:2;width:200px;min-width:140px}
 .printer-slot::after{content:'';position:absolute;left:8%;right:8%;bottom:5px;height:3px;border-radius:2px;background:#000;box-shadow:0 1px 0 rgba(255,255,255,.05)}
 .paper{background:var(--paper);color:var(--ink);margin:-8px 0 0;padding:13px 8px 0;border-radius:0 0 2px 2px;box-shadow:var(--sh3);position:relative}
@@ -162,68 +169,68 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 :root.gelap .paper-teeth{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath fill='%23F5EFE2' d='M0 0H24L18 12 12 0 6 12Z'/%3E%3C/svg%3E") repeat-x left bottom/24px 12px}
 .paper.feed{animation:feed .5s cubic-bezier(.2,.85,.3,1)}
 @keyframes feed{from{transform:translateY(-16px);opacity:.35}to{transform:none;opacity:1}}
-.pv-kosong{color:var(--tx3);font-size:12px;padding:36px 10px;text-align:center}
+.pv-kosong{color:var(--tx3);font-size:11.5px;padding:36px 10px;text-align:center}
 
 /* ============ TAMPILAN DESAIN ============ */
 .bar-tpl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 16px}
-.bar-tpl .nama-tpl{cursor:pointer;border:0;background:none;color:var(--tx);font:inherit;font-weight:800;font-size:16px;padding:4px 8px;border-radius:8px}
+.bar-tpl .nama-tpl{cursor:pointer;border:0;background:none;color:var(--tx);font:inherit;font-weight:800;font-size:15px;padding:4px 8px;border-radius:8px}
 .bar-tpl .nama-tpl:hover{background:var(--bg3)}
 .blk{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden}
-.blk-h{display:flex;align-items:center;gap:5px;padding:9px 9px 9px 12px;cursor:pointer}
-.blk-t{flex:1;min-width:0;font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.blk-s{color:var(--tx3);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+.blk-h{display:flex;align-items:center;gap:5px;padding:8px 9px 8px 12px;cursor:pointer}
+.blk-t{flex:1;min-width:0;font-weight:700;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk-s{color:var(--tx3);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
 .blk-h .chev{transition:transform .18s;color:var(--tx3)}
 .blk.col .blk-h .chev{transform:rotate(-90deg)}
 .blk-b{padding:12px;border-top:1px dashed var(--bd);display:grid;gap:10px}
 .blk.col .blk-b{display:none}
-.chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px;border:1px dashed var(--bd2);border-radius:12px}
-.chip{border:1px dashed var(--bd2);background:transparent;color:var(--tx2);font:inherit;font-size:12px;font-weight:600;padding:7px 12px;border-radius:99px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:13px;border:1px dashed var(--bd2);border-radius:12px}
+.chip{border:1px dashed var(--bd2);background:transparent;color:var(--tx2);font:inherit;font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:99px;cursor:pointer}
 .chip:hover{border-color:var(--ac);color:var(--ac2)}
 .cek-baris{display:flex;flex-wrap:wrap;gap:14px}
 .cek-baris .cek{margin:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.bantuan{font-size:11px;color:var(--tx3);line-height:1.5}
+.bantuan{font-size:10.5px;color:var(--tx3);line-height:1.5}
 
 /* ============ TAMPILAN ISI ============ */
 .isi-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .isi-no{text-align:right}
 .isi-no .lbl{margin:0 0 2px}
-.isi-no strong{font-size:15px;color:var(--ac2)}
+.isi-no strong{font-size:14px;color:var(--ac2)}
 .baris-item{display:grid;gap:6px;margin-bottom:6px;align-items:start}
-.baris-item .inp{padding:8px 10px}
-.tambah-item{width:100%;border:1px dashed var(--bd2);background:transparent;color:var(--tx2);font:inherit;font-weight:700;font-size:12.5px;padding:9px;border-radius:9px;cursor:pointer}
+.baris-item .inp{padding:7px 9px}
+.tambah-item{width:100%;border:1px dashed var(--bd2);background:transparent;color:var(--tx2);font:inherit;font-weight:700;font-size:12px;padding:8px;border-radius:9px;cursor:pointer}
 .tambah-item:hover{border-color:var(--ac);color:var(--ac2)}
 .total-live{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--bd);margin-top:10px;padding-top:10px}
-.total-live b{font-size:17px;color:var(--ac2);letter-spacing:.02em}
+.total-live b{font-size:16px;color:var(--ac2);letter-spacing:.02em}
 .aksi-bar{position:sticky;bottom:0;display:flex;gap:10px;justify-content:flex-end;padding:14px 0 6px;background:linear-gradient(transparent,var(--bg) 40%);flex-wrap:wrap}
 .aksi-bar .btn.p{flex:1;min-width:170px}
 
 /* ============ RIWAYAT ============ */
 .cari{position:relative;margin-bottom:14px}
-.cari .inp{padding-left:38px}
-.cari svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx3)}
-.row-resi{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;color:var(--tx);font:inherit}
+.cari .inp{padding-left:36px}
+.cari svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3)}
+.row-resi{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer;color:var(--tx);font:inherit}
 .row-resi:hover{border-color:var(--ac)}
-.row-resi strong{display:block;font-size:13.5px}
+.row-resi strong{display:block;font-size:13px}
 .row-resi.batal strong{text-decoration:line-through;color:var(--tx3)}
 .rr-l{min-width:0}
 .rr-l .sub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rr-r{text-align:right;flex:none}
-.rr-total{font-weight:800;font-size:13.5px}
-.badge{display:inline-block;font-size:9.5px;letter-spacing:.12em;background:var(--err);color:var(--err-ink);padding:2px 8px;border-radius:99px;font-weight:800;margin-top:4px}
+.rr-total{font-weight:800;font-size:13px}
+.badge{display:inline-block;font-size:9px;letter-spacing:.12em;background:var(--err);color:var(--err-ink);padding:2px 8px;border-radius:99px;font-weight:800;margin-top:4px}
 .row-pilih{display:flex;gap:10px;align-items:center;margin-bottom:8px}
 .row-pilih .row-resi{flex:1;margin-bottom:0}
 .row-pilih input{accent-color:var(--ac);width:17px;height:17px;flex:none;cursor:pointer}
-.meta-grid{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13px;margin:0 0 14px}
+.meta-grid{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:12.5px;margin:0 0 14px}
 .meta-grid dt{color:var(--tx2)}
 .meta-grid dd{margin:0;font-weight:600}
 .aksi-baris{display:flex;flex-wrap:wrap;gap:8px}
 .kosong{padding:46px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
-.kosong h3{margin:0;font-size:15px}
+.kosong h3{margin:0;font-size:14px}
 .kosong .sub{max-width:320px}
 
 /* ============ SETELAN ============ */
-.info-baris{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:7px 0;border-bottom:1px dashed var(--bd)}
+.info-baris{display:flex;justify-content:space-between;gap:12px;font-size:12px;padding:7px 0;border-bottom:1px dashed var(--bd)}
 .info-baris:last-child{border-bottom:0}
 .info-baris span:first-child{color:var(--tx2)}
 
@@ -231,11 +238,11 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 #modalRoot{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:20px}
 .modal-bg{position:absolute;inset:0;background:var(--modal-bg)}
 .modal-kartu{position:relative;width:min(450px,100%);max-height:86vh;overflow:auto;background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:20px;box-shadow:var(--sh2);animation:pop .16s cubic-bezier(.2,.9,.3,1.1)}
-.modal-kartu h3{margin:0 0 6px;font-size:15px;letter-spacing:.02em}
+.modal-kartu h3{margin:0 0 6px;font-size:14px;letter-spacing:.02em}
 @keyframes pop{from{opacity:0;transform:scale(.97) translateY(8px)}}
 .m-aksi{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
 #toastRoot{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:90;pointer-events:none;max-width:min(92vw,420px)}
-.toast{background:var(--toast-bg);border:1px solid var(--bd2);border-left:3px solid var(--ac);color:var(--tx);padding:10px 16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.28);font-size:12.5px;display:flex;gap:9px;align-items:center;animation:tin .22s cubic-bezier(.2,.9,.3,1.2)}
+.toast{background:var(--toast-bg);border:1px solid var(--bd2);border-left:3px solid var(--ac);color:var(--tx);padding:10px 16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.28);font-size:12px;display:flex;gap:9px;align-items:center;animation:tin .22s cubic-bezier(.2,.9,.3,1.2)}
 .toast.err{border-left-color:var(--err)}
 .toast.ok{border-left-color:var(--ok)}
 .toast.out{opacity:0;transform:translateY(8px);transition:.3s}
@@ -257,10 +264,10 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 }
 #previewOverlay{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column}
 .ov-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd);flex:none}
-.ov-head span{font-size:10.5px;letter-spacing:.18em;color:var(--tx2);font-weight:800}
+.ov-head span{font-size:10px;letter-spacing:.18em;color:var(--tx2);font-weight:800}
 #ovScroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:18px 12px 40px}
 
-/* ============ CETAK ============ */
+/* ============ CETAK (TETAP monospace) ============ */
 #printRoot{display:none;font-family:var(--mono);color:#000;background:#fff;line-height:1.25}
 .pln{white-space:pre;overflow:hidden}
 .pS{font-size:.75em}.pL{font-size:2em}.pB{font-weight:700}.pU{text-decoration:underline}
@@ -286,7 +293,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
   <div class="auth-kartu">
     <button id="btnTemaAuth" class="btn ic g tema-auth" title="Ganti tema terang/gelap" aria-label="Ganti tema terang/gelap"></button>
     <div class="brand-glyph">
-      <img src="./logo.png" alt="Logo Thermal Me" class="logo-auth" width="72" height="72">
+      <img src="./logo.png" alt="Logo Thermal Me" class="logo-auth" width="76" height="76">
     </div>
     <h1 class="auth-brand">THERMAL ME</h1>
     <p class="auth-tag">Pembuat resi · offline · terenkripsi</p>
@@ -325,7 +332,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
   <header id="topbar">
     <div class="brand-wrap">
       <img src="./logo.png" alt="" class="logo-top" aria-hidden="true">
-      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.7</span>
+      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.8</span>
     </div>
     <nav id="navTabs">
       <button data-view="desain">Desain</button>
@@ -404,13 +411,23 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 'use strict';
 (() => {
 /* =====================================================================
-   THERMAL ME — v1.7
-   Perubahan dari v1.6:
-   - Logo resmi aplikasi (logo.png, latar transparan) dipakai di:
-     favicon browser, kartu layar awal, bilah atas, ikon PWA
-     (install Android/Windows), dan apple-touch-icon iOS.
-   - logo.png ikut di-cache service worker (caching per-aset, tahan
-     bila file logo suatu saat tidak ada).
+   THERMAL ME — v1.8
+   Perubahan dari v1.7:
+   - Blok Field Data: perataan kiri/tengah/kanan/JUSTIFY (justify =
+     label nempel kiri, isi nempel kanan — konsisten dengan nomor &
+     tanggal; jatuh ke kiri bila tidak muat).
+   - Titik dua (:) pada Field Data TIDAK ditambahkan otomatis lagi —
+     diketik manual di label (mis. "Nama:"). Templat lama berubah
+     tampilan: tambahkan ":" di label bila ingin tampak seperti dulu.
+   - Blok Field Data: tata letak 1/2/3 KOLOM — beberapa field sebaris
+     di kertas (2 kolom: celah 2 spasi; 58mm umumnya hanya muat 2
+     kolom; bila kolom < 10 karakter otomatis jatuh ke 1 kolom).
+     Mode 2–3 kolom merender rata kiri per kolom.
+   - Font UI baru: sans-serif sistem 13px (lebih kecil & berbeda dari
+     monospace lama). Pratinjau kertas & area cetak TETAP monospace —
+     cermin grid karakter printer 1:1 (by design).
+   - Logo resmi (logo.png, latar putih 512x512): ditampilkan sebagai
+     ubin membulat rapi di mode terang & gelap.
    Aturan keamanan di seluruh file ini:
    1. String pengguna HANYA masuk lewat .textContent / .value / atribut
       aman — tidak pernah lewat innerHTML (kecuali SVG statis kode sendiri).
@@ -426,7 +443,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
       passphrase brankas).
 ===================================================================== */
 
-const APP_VERSI = 'V1.7';
+const APP_VERSI = 'V1.8';
 const ITER = 600000;
 const MM = 96 / 25.4;
 const DBNAME = 'thermalme';
@@ -847,14 +864,109 @@ function renderDoc(tpl, draf, set, mode){
         break;
       }
       case 'field': {
+        /* V1.8: tanpa titik dua otomatis (user mengetik sendiri di
+           label), perataan kiri/tengah/kanan/justify, dan tata letak
+           1/2/3 kolom (fallback ke 1 kolom bila kolom terlalu sempit). */
         const baris = nilaiField(b, draf);
-        const lW = Math.min(Math.max(...baris.map(r => String(r.label || '').length), 1), Math.max(4, Math.floor(W / 2) - 2));
-        for (const r of baris){
-          const kepala = padR(r.label, lW) + ' :';
-          if (!String(r.nilai ?? '').trim()){ add(kepala); continue; }
-          const sisa = Math.max(1, W - kepala.length - 1);
-          const wr = bungkus(r.nilai, sisa, sisa, ' '.repeat(kepala.length + 1));
-          wr.forEach((ln, i) => add(i === 0 ? kepala + ' ' + ln : ln));
+        if (baris.length){
+          const rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
+          const nKol = clampInt(b.kolom || 1, 1, 3);
+          const lW = Math.min(Math.max(1, ...baris.map(r => String(r.label ?? '').length)), Math.max(4, Math.floor(W / 2) - 2));
+
+          const kiriBaris = (r) => {
+            const lab = String(r.label ?? '');
+            const val = String(r.nilai ?? '');
+            if (!lab.trim()){
+              for (const ln of bungkus(val, W)) add(ln);
+              return;
+            }
+            const kepala = padR(lab, lW);
+            if (!val.trim()){ add(kepala); return; }
+            const sisa = Math.max(1, W - lW - 1);
+            const wr = bungkus(val, sisa, sisa, ' '.repeat(lW + 1));
+            wr.forEach((ln, i) => add(i === 0 ? kepala + ' ' + ln : ln));
+          };
+
+          let pakaiKolom = false;
+          if (nKol >= 2){
+            const celah = 2;
+            const colW = Math.floor((W - celah * (nKol - 1)) / nKol);
+            if (colW >= 10){
+              pakaiKolom = true;
+              for (let gIdx = 0; gIdx < baris.length; gIdx += nKol){
+                const grup = baris.slice(gIdx, gIdx + nKol);
+                let labW = 1;
+                for (const r of grup) labW = Math.max(labW, String(r.label ?? '').trim().length);
+                labW = Math.min(labW, Math.max(1, colW - 4));
+                const sel = grup.map(r => {
+                  const lab = String(r.label ?? '').trim();
+                  const val = String(r.nilai ?? '');
+                  const keluar = [];
+                  if (!lab){
+                    for (const ln of bungkus(val, colW)) keluar.push(ln);
+                  } else if (lab.length > labW){
+                    for (const ln of bungkus(lab, colW)) keluar.push(ln);
+                    if (val.trim()) for (const ln of bungkus(val, colW)) keluar.push(ln);
+                  } else {
+                    const kepala = padR(lab, labW);
+                    if (!val.trim()) keluar.push(kepala);
+                    else {
+                      const sisa = Math.max(1, colW - labW - 1);
+                      const wr = bungkus(val, sisa, sisa, ' '.repeat(labW + 1));
+                      keluar.push(kepala + ' ' + wr[0]);
+                      for (let i = 1; i < wr.length; i++) keluar.push(wr[i]);
+                    }
+                  }
+                  return keluar.map(l => padR(l, colW));
+                });
+                const tinggi = Math.max(...sel.map(a => a.length));
+                for (let i = 0; i < tinggi; i++){
+                  let teks = '';
+                  for (let c = 0; c < sel.length; c++)
+                    teks += (c > 0 ? ' '.repeat(celah) : '') + (sel[c][i] || ' '.repeat(colW));
+                  add(teks);
+                }
+              }
+            }
+            /* colW < 10 → kolom terlalu sempit: jatuh ke 1 kolom di bawah */
+          }
+
+          if (!pakaiKolom){
+            for (const r of baris){
+              const lab = String(r.label ?? '');
+              const val = String(r.nilai ?? '');
+              const adaLab = !!lab.trim();
+              const adaVal = !!val.trim();
+              if (!adaLab && !adaVal) continue;
+              if (!adaVal){
+                if (rata === 'tengah') add(ctr(lab, W));
+                else if (rata === 'kanan') add(padL(lab, W));
+                else add(lab);
+                continue;
+              }
+              if (!adaLab){
+                for (const ln of bungkus(val, W)){
+                  if (rata === 'tengah') add(ctr(ln, W));
+                  else if (rata === 'kanan') add(padL(ln, W));
+                  else add(ln);
+                }
+                continue;
+              }
+              if (rata === 'justify' && lab.length + 1 + val.length <= W){
+                add(padR(lab, W - val.length) + val);
+                continue;
+              }
+              if (rata === 'tengah'){
+                for (const ln of bungkus(lab + ' ' + val, W)) add(ctr(ln, W));
+                continue;
+              }
+              if (rata === 'kanan'){
+                for (const ln of bungkus(lab + ' ' + val, W)) add(padL(ln, W));
+                continue;
+              }
+              kiriBaris(r);
+            }
+          }
         }
         break;
       }
@@ -1623,7 +1735,7 @@ function blokBaru(type){
   const id = uid();
   switch (type){
     case 'teks':    return { id, type, isi: 'Teks baru', rata: 'kiri', ukuran: 'N', tebal: false, garisBawah: false };
-    case 'field':   return { id, type, baris: [{ label: 'Label', nilai: '' }] };
+    case 'field':   return { id, type, baris: [{ label: 'Label', nilai: '' }], rata: 'kiri', kolom: 1 };
     case 'item':    return { id, type, kolom: { qty: true, harga: true, subtot: true, satuan: false, diskon: false }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true };
     case 'total':   return { id, type, diskonMode: 'tanpa', pajakMode: 'tanpa', pembulatan: 0, tampilBayar: true, label: {} };
     case 'nomor':   return { id, type, label: 'No. Resi', format: 'TM-{YYYY}{MM}-{seq:4}', besar: false, tata: 'dua' };
@@ -1640,7 +1752,7 @@ function presetTemplat(jenis){
     B({ type: 'logo', gambar: null, lebar: 80, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'NOTA', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', besar: false, tata: 'satu' }),
-    B({ type: 'field', baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }] }),
+    B({ type: 'field', rata: 'kiri', kolom: 1, baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }] }),
     B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY}', rata: 'kiri' }),
     B({ type: 'garis', gaya: 'penuh' }),
     B({ type: 'item', kolom: { qty: true, harga: true, subtot: true, satuan: true, diskon: true }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true }),
@@ -1651,7 +1763,7 @@ function presetTemplat(jenis){
     B({ type: 'teks', isi: 'RESI PENGIRIMAN', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'nomor', label: '', format: 'KIR{YY}{MM}{seq:5}', besar: true, tata: 'dua' }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'field', baris: [
+    B({ type: 'field', rata: 'kiri', kolom: 1, baris: [
       { label: 'Pengirim', nilai: '' }, { label: 'Telp', nilai: '' }, { label: 'Asal', nilai: '' },
       { label: 'Penerima', nilai: '' }, { label: 'Telp', nilai: '' }, { label: 'Tujuan', nilai: '' },
       { label: 'Berat', nilai: '' }, { label: 'Layanan', nilai: '' }] }),
@@ -1664,7 +1776,7 @@ function presetTemplat(jenis){
     B({ type: 'logo', gambar: null, lebar: 100, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'JUDUL', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'field', baris: [{ label: 'Label', nilai: '' }] })
+    B({ type: 'field', rata: 'kiri', kolom: 1, baris: [{ label: 'Label', nilai: '' }] })
   ]};
   return { id: uid(), nama: 'Struk Toko', kertas: { lebar: 58 }, font: 'A', seq: 1, blok: [
     B({ type: 'logo', gambar: null, lebar: 100, rasio: 0.35, posisi: 'tengah' }),
@@ -1702,6 +1814,8 @@ function migrasiTemplat(t){
       b.garisBawah = !!b.garisBawah;
     }
     if (b.type === 'field'){
+      b.rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
+      b.kolom = clampInt(b.kolom || 1, 1, 3);
       b.baris = Array.isArray(b.baris)
         ? b.baris.filter(r => r && typeof r === 'object').slice(0, 30)
             .map(r => ({ label: String(r.label ?? '').slice(0, 40), nilai: String(r.nilai ?? '').slice(0, 200) }))
@@ -1844,7 +1958,7 @@ function kosongView(judul, sub, aksi){
 function ringkasBlok(b){
   switch (b.type){
     case 'teks':    return (String(b.isi || '').split('\n')[0] || '(kosong)').slice(0, 26);
-    case 'field':   return (b.baris || []).length + ' baris';
+    case 'field':   return (b.baris || []).length + ' baris' + (clampInt(b.kolom || 1, 1, 3) > 1 ? ' · ' + clampInt(b.kolom || 1, 1, 3) + ' kolom' : '');
     case 'item':    return 'tabel item';
     case 'logo':    return b.gambar ? (clampInt(b.lebar || 100, 10, 100) + '% · ' + posLogo(b.posisi)) : 'belum ada gambar';
     case 'total':   return [b.diskonMode !== 'tanpa' ? 'diskon' : null, b.pajakMode !== 'tanpa' ? 'pajak' : null, b.tampilBayar ? 'bayar' : null].filter(Boolean).join(' · ') || 'subtotal saja';
@@ -1987,12 +2101,14 @@ function badanBlok(tpl, b){
     }
     case 'field': {
       b.baris = b.baris || [];
+      if (!b.rata) b.rata = 'kiri';
+      if (!b.kolom) b.kolom = 1;
       const wadah = h('div', {});
       const kepalaPerbarui = () => { const k = wadah.closest('.blk'); if (k){ const s = k.querySelector('.blk-s'); if (s) s.textContent = ringkasBlok(b); } };
       const gambar = () => {
         wadah.textContent = '';
         b.baris.forEach((r, idx) => {
-          const inpL = h('input', { class: 'inp', maxlength: 40, value: r.label, placeholder: 'Label' });
+          const inpL = h('input', { class: 'inp', maxlength: 40, value: r.label, placeholder: 'Label (mis. Nama:)' });
           inpL.addEventListener('input', e => { r.label = e.target.value; ubahTemplat(tpl); kepalaPerbarui(); });
           const inpN = h('input', { class: 'inp', maxlength: 200, value: r.nilai, placeholder: 'Nilai awal' });
           inpN.addEventListener('input', e => { r.nilai = e.target.value; ubahTemplat(tpl); });
@@ -2001,7 +2117,12 @@ function badanBlok(tpl, b){
         });
       };
       gambar();
-      badan.append(wadah, h('button', { class: 'tambah-item', onclick: () => { b.baris.push({ label: 'Label', nilai: '' }); ubahTemplat(tpl); renderDesain(); } }, '+ Tambah baris'));
+      badan.append(
+        L('Perataan', seg([{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }, { v: 'justify', l: 'Justify' }], b.rata, v => { b.rata = v; ubahTemplat(tpl); })),
+        L('Tata letak', seg([{ v: 1, l: '1 Kolom' }, { v: 2, l: '2 Kolom' }, { v: 3, l: '3 Kolom' }], clampInt(b.kolom, 1, 3), v => { b.kolom = v; ubahTemplat(tpl); })),
+        wadah,
+        h('button', { class: 'tambah-item', onclick: () => { b.baris.push({ label: 'Label', nilai: '' }); ubahTemplat(tpl); renderDesain(); } }, '+ Tambah baris'),
+        h('p', { class: 'bantuan' }, 'Titik dua tidak ditambahkan otomatis — ketik sendiri di label bila perlu (mis. "Nama:"). Justify: label nempel kiri, isi nempel kanan (jatuh ke kiri bila tidak muat). Mode 2–3 kolom menyusun beberapa field sebaris (rata kiri per kolom); 58mm umumnya hanya muat 2 kolom — bila kolom terlalu sempit otomatis menjadi 1 kolom.'));
       break;
     }
     case 'item': {
