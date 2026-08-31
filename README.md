@@ -1,6 +1,6 @@
 ================================================================
   THERMAL ME — PEMBUAT RESI, STRUK & NOTA KUSTOM
-  Versi     : V1.6
+  Versi     : V1.7
   Jenis     : PWA (Progressive Web App) — 100% offline
   Copyright : (c) 2025 · Design by Rama Eka Yudha
 ================================================================
@@ -26,8 +26,10 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
 - Nomor urut: format token kustom, bisa diedit, mode 1 baris
   (justify) atau 2 baris.
 - Tanggal: rata kiri/tengah/kanan/justify.
-- Logo: PNG/JPG, ukuran bebas 10-100%, rata kiri/tengah/kanan,
+- Logo resi: PNG/JPG, ukuran bebas 10-100%, rata kiri/tengah/kanan,
   dicetak dengan dither Floyd-Steinberg di printer termal.
+- Logo resmi aplikasi (logo.png, latar transparan): favicon,
+  layar awal, bilah atas, ikon PWA/Android/iOS, di-cache offline.
 - Riwayat terenkripsi: cari, cetak ulang, duplikat, batalkan,
   hapus satuan/terpilih/sekaligus.
 - Simpan otomatis (terlihat di footer) + cadangan otomatis harian
@@ -42,6 +44,7 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
   index.html     : seluruh aplikasi (UI + logika + keamanan)
   sw.js          : service worker (offline penuh)
   manifest.json  : konfigurasi PWA (installable)
+  logo.png       : logo resmi aplikasi (latar transparan)
   readme.txt     : file ini
 
 ----------------------------------------------------------------
@@ -59,11 +62,16 @@ service worker, dan printer membutuhkan konteks aman.
 - GitHub Pages : push repo -> Settings -> Pages -> Deploy from
   branch: main / (root). HTTPS otomatis aktif.
 - Netlify Drop : seret folder ke app.netlify.com/drop
-- cPanel       : upload 4 file ke public_html, aktifkan SSL.
+- cPanel       : upload 5 file ke public_html, aktifkan SSL.
 
 PENTING: data brankas terikat pada ALAMAT aplikasi. Pindah domain
 = brankas baru. Gunakan Cadangkan & Pulihkan untuk memindahkan
 data antar perangkat/domain.
+
+CATATAN LOGO: untuk hasil install paling mulus, ekspor logo.png
+ukuran 512x512 dengan konten utama di area tengah (launcher
+Android memotong ikon berbentuk lingkaran). Ukuran lain tetap
+berfungsi untuk tampilan aplikasi.
 
 ----------------------------------------------------------------
 6. DUKUNGAN PRINTER
@@ -101,6 +109,8 @@ service worker ikut dinaikkan agar pembaruan otomatis).
   V1.6 : pra-login bersih (overlay pratinjau disembunyikan),
          mode terang/gelap, cadangan otomatis + pulihkan,
          justify teks, nomor urut 1/2 baris, perataan tanggal
+  V1.7 : logo resmi aplikasi (logo.png) — favicon, layar awal,
+         bilah atas, ikon PWA/install; latar transparan didukung
 
 ================================================================
   Copyright (c) 2025 · Design by Rama Eka Yudha
