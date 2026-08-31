@@ -5,28 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-src 'none'; object-src 'none'; worker-src 'self'">
 <meta name="description" content="Thermal Me — pembuat resi, struk, dan nota kustom. Offline, terenkripsi, siap cetak.">
-<meta name="theme-color" content="#16130F">
+<meta name="theme-color" content="#F4F6F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="color-scheme" content="light dark">
 <title>Thermal Me — Pembuat Resi</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='%2316130F'/%3E%3Cpath%20fill='%23F5EFE2'%20d='M150%2088h212v300l-26%2020-27-20-26%2020-27-20-26%2020-27-20-26%2020-27-20-26%2020z'/%3E%3Cg%20stroke='%2316130F'%20stroke-width='26'%20stroke-linecap='round'%3E%3Cpath%20d='M190%20170h132M190%20236h132M190%20302h76'/%3E%3C/g%3E%3Cpath%20d='M190%20350h132'%20stroke='%23FF5C29'%20stroke-width='26'%20stroke-linecap='round'/%3E%3C/svg%3E">
 <style id="printStyle"></style>
 <style>
 /* ============ TOKEN DESAIN ============ */
+/* Default: TERANG — Ultra Clean White.
+   class .gelap pada <html> mengganti seluruh token ke mode gelap. */
 :root{
+  --bg:#F4F6F8; --bg2:#FFFFFF; --bg3:#EDF1F5; --inset:#F8FAFC;
+  --bd:#E4E9F0; --bd2:#CBD4DF;
+  --tx:#1B2534; --tx2:#5D6B7E; --tx3:#96A1B2;
+  --ac:#FF5C29; --ac2:#E04A16; --ac-ink:#FFFFFF;
+  --ok:#27945C; --err:#D64533; --err-ink:#FFFFFF; --wr:#B9860F;
+  --err-bd:#EBB7AE; --err-bg:#FBEEEB;
+  --paper:#FFFFFF; --ink:#1A1D23;
+  --toast-bg:#FFFFFF;
+  --modal-bg:rgba(23,30,45,.42);
+  --slot:#39414D;
+  --sh1:0 10px 30px rgba(23,32,48,.10);
+  --sh2:0 24px 60px rgba(23,32,48,.18);
+  --sh3:0 12px 26px rgba(23,32,48,.14);
+  --mono:ui-monospace,'Cascadia Mono','JetBrains Mono',Menlo,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;
+  color-scheme:light;
+}
+:root.gelap{
   --bg:#16130F; --bg2:#1D1915; --bg3:#262019; --inset:#0F0C0A;
   --bd:#332C23; --bd2:#473D2F;
   --tx:#EDE6D8; --tx2:#A99C86; --tx3:#7A6F5D;
   --ac:#FF5C29; --ac2:#FF8A5C; --ac-ink:#1A0E06;
-  --ok:#7FB069; --err:#E2604F; --wr:#E0A83C;
+  --ok:#7FB069; --err:#E2604F; --err-ink:#1A0E0A; --wr:#E0A83C;
+  --err-bd:#7A3A32; --err-bg:#2A1512;
   --paper:#F5EFE2; --ink:#221D15;
-  --mono:ui-monospace,'Cascadia Mono','JetBrains Mono',Menlo,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;
+  --toast-bg:#0C0A08;
+  --modal-bg:rgba(8,6,4,.74);
+  --slot:#0A0806;
+  --sh1:0 24px 60px rgba(0,0,0,.5);
+  --sh2:0 30px 80px rgba(0,0,0,.6);
+  --sh3:0 16px 34px rgba(0,0,0,.45);
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{color-scheme:dark}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--ac);color:var(--ac-ink)}
@@ -43,8 +68,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .btn[disabled]{opacity:.45;cursor:default;transform:none}
 .btn.p{background:var(--ac);border-color:var(--ac);color:var(--ac-ink)}
 .btn.p:hover{background:var(--ac2);border-color:var(--ac2)}
-.btn.d{border-color:#7A3A32;color:var(--err)}
-.btn.d:hover{border-color:var(--err);background:#2A1512}
+.btn.d{border-color:var(--err-bd);color:var(--err)}
+.btn.d:hover{border-color:var(--err);background:var(--err-bg)}
 .btn.g{background:transparent}
 .btn.sm{padding:6px 10px;font-size:12px}
 .btn.ic{padding:7px}
@@ -75,7 +100,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 
 /* ============ LAYAR AUTH ============ */
 #layarAuth{min-height:100dvh;display:grid;place-items:center;padding:24px}
-.auth-kartu{width:min(430px,100%);background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:30px 28px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.auth-kartu{position:relative;width:min(430px,100%);background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:30px 28px;box-shadow:var(--sh1)}
+.tema-auth{position:absolute;top:14px;right:14px;z-index:1}
 .brand-glyph{display:flex;justify-content:center;margin-bottom:14px}
 .auth-brand{text-align:center;font-weight:800;letter-spacing:.22em;font-size:19px;margin:0}
 .auth-tag{text-align:center;color:var(--tx2);font-size:12px;margin:6px 0 22px;letter-spacing:.06em}
@@ -113,12 +139,13 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 #pvScroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:18px 12px 60px}
 
 /* ---- footer aplikasi ---- */
-#appFooter{position:sticky;bottom:0;z-index:5;flex:none;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 16px;background:var(--bg);border-top:1px solid var(--bd);color:var(--tx3);font-size:10.5px;letter-spacing:.09em}
+#appFooter{position:sticky;bottom:0;z-index:5;flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--bg);border-top:1px solid var(--bd);color:var(--tx3);font-size:10.5px;letter-spacing:.09em}
+.foot-status{font-size:10px;letter-spacing:.05em;white-space:nowrap}
 
 /* ---- kertas termal ---- */
-.printer-slot{height:18px;border-radius:9px;background:#0A0806;box-shadow:inset 0 2px 6px rgba(0,0,0,.8),0 1px 0 var(--bd);position:relative;z-index:2;width:200px;min-width:140px}
+.printer-slot{height:18px;border-radius:9px;background:var(--slot);box-shadow:inset 0 2px 6px rgba(0,0,0,.8),0 1px 0 var(--bd);position:relative;z-index:2;width:200px;min-width:140px}
 .printer-slot::after{content:'';position:absolute;left:8%;right:8%;bottom:5px;height:3px;border-radius:2px;background:#000;box-shadow:0 1px 0 rgba(255,255,255,.05)}
-.paper{background:var(--paper);color:var(--ink);margin:-8px 0 0;padding:13px 8px 0;border-radius:0 0 2px 2px;box-shadow:0 16px 34px rgba(0,0,0,.45);position:relative}
+.paper{background:var(--paper);color:var(--ink);margin:-8px 0 0;padding:13px 8px 0;border-radius:0 0 2px 2px;box-shadow:var(--sh3);position:relative}
 .paper-body{font-family:var(--mono);line-height:1.25;overflow:hidden}
 .ln{white-space:pre;min-height:1.25em}
 .sS{font-size:.75em}.sL{font-size:2em}.sB{font-weight:700}.sU{text-decoration:underline}
@@ -128,7 +155,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .lnHIn{display:inline-block;transform:scaleY(2);transform-origin:0 0}
 .lnWIn{display:inline-block;transform:scaleX(2);transform-origin:0 0}
 .lnLogo{display:block;margin:3px auto;max-width:100%}
-.paper-teeth{height:12px;margin:3px -8px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath fill='%23F5EFE2' d='M0 0H24L18 12 12 0 6 12Z'/%3E%3C/svg%3E") repeat-x left bottom/24px 12px}
+.paper-teeth{height:12px;margin:3px -8px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath fill='%23FFFFFF' d='M0 0H24L18 12 12 0 6 12Z'/%3E%3C/svg%3E") repeat-x left bottom/24px 12px}
+:root.gelap .paper-teeth{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath fill='%23F5EFE2' d='M0 0H24L18 12 12 0 6 12Z'/%3E%3C/svg%3E") repeat-x left bottom/24px 12px}
 .paper.feed{animation:feed .5s cubic-bezier(.2,.85,.3,1)}
 @keyframes feed{from{transform:translateY(-16px);opacity:.35}to{transform:none;opacity:1}}
 .pv-kosong{color:var(--tx3);font-size:12px;padding:36px 10px;text-align:center}
@@ -179,7 +207,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 .rr-l .sub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rr-r{text-align:right;flex:none}
 .rr-total{font-weight:800;font-size:13.5px}
-.badge{display:inline-block;font-size:9.5px;letter-spacing:.12em;background:var(--err);color:#1A0E0A;padding:2px 8px;border-radius:99px;font-weight:800;margin-top:4px}
+.badge{display:inline-block;font-size:9.5px;letter-spacing:.12em;background:var(--err);color:var(--err-ink);padding:2px 8px;border-radius:99px;font-weight:800;margin-top:4px}
 .row-pilih{display:flex;gap:10px;align-items:center;margin-bottom:8px}
 .row-pilih .row-resi{flex:1;margin-bottom:0}
 .row-pilih input{accent-color:var(--ac);width:17px;height:17px;flex:none;cursor:pointer}
@@ -198,13 +226,13 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 
 /* ============ MODAL & TOAST ============ */
 #modalRoot{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:20px}
-.modal-bg{position:absolute;inset:0;background:rgba(8,6,4,.74)}
-.modal-kartu{position:relative;width:min(450px,100%);max-height:86vh;overflow:auto;background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .16s cubic-bezier(.2,.9,.3,1.1)}
+.modal-bg{position:absolute;inset:0;background:var(--modal-bg)}
+.modal-kartu{position:relative;width:min(450px,100%);max-height:86vh;overflow:auto;background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:20px;box-shadow:var(--sh2);animation:pop .16s cubic-bezier(.2,.9,.3,1.1)}
 .modal-kartu h3{margin:0 0 6px;font-size:15px;letter-spacing:.02em}
 @keyframes pop{from{opacity:0;transform:scale(.97) translateY(8px)}}
 .m-aksi{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
 #toastRoot{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:90;pointer-events:none;max-width:min(92vw,420px)}
-.toast{background:#0C0A08;border:1px solid var(--bd2);border-left:3px solid var(--ac);color:var(--tx);padding:10px 16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.5);font-size:12.5px;display:flex;gap:9px;align-items:center;animation:tin .22s cubic-bezier(.2,.9,.3,1.2)}
+.toast{background:var(--toast-bg);border:1px solid var(--bd2);border-left:3px solid var(--ac);color:var(--tx);padding:10px 16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.28);font-size:12.5px;display:flex;gap:9px;align-items:center;animation:tin .22s cubic-bezier(.2,.9,.3,1.2)}
 .toast.err{border-left-color:var(--err)}
 .toast.ok{border-left-color:var(--ok)}
 .toast.out{opacity:0;transform:translateY(8px);transition:.3s}
@@ -253,6 +281,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 <!-- ================== LAYAR BRANKAS ================== -->
 <section id="layarAuth">
   <div class="auth-kartu">
+    <button id="btnTemaAuth" class="btn ic g tema-auth" title="Ganti tema terang/gelap" aria-label="Ganti tema terang/gelap"></button>
     <div class="brand-glyph">
       <svg viewBox="0 0 32 32" width="56" height="56" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FF5C29"/><path fill="#16130F" d="M9 4h14v19l-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4z"/><g stroke="#F5EFE2" stroke-width="2.2" stroke-linecap="round"><path d="M12 10h8M12 14.5h8"/></g><path d="M12 19h5" stroke="#FF5C29" stroke-width="2.2" stroke-linecap="round"/></svg>
     </div>
@@ -293,7 +322,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
   <header id="topbar">
     <div class="brand-wrap">
       <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FF5C29"/><path fill="#16130F" d="M9 4h14v19l-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4-1.75 1.4-1.75-1.4z"/><g stroke="#F5EFE2" stroke-width="2.2" stroke-linecap="round"><path d="M12 10h8M12 14.5h8"/></g><path d="M12 19h5" stroke="#FF5C29" stroke-width="2.2" stroke-linecap="round"/></svg>
-      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.5</span>
+      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.6</span>
     </div>
     <nav id="navTabs">
       <button data-view="desain">Desain</button>
@@ -303,6 +332,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
     </nav>
     <div class="top-aksi">
       <button id="btnInstall" class="btn sm g" hidden>Pasang</button>
+      <button id="btnTema" class="btn ic g" title="Ganti tema terang/gelap" aria-label="Ganti tema terang/gelap"></button>
       <button id="btnKunci" class="btn ic g" title="Kunci sekarang" aria-label="Kunci sekarang"></button>
     </div>
   </header>
@@ -314,9 +344,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
       <div id="viewRiwayat" class="view" hidden></div>
       <div id="viewSetelan" class="view" hidden></div>
       <footer id="appFooter">
-        <span>Copyright © <span class="footYear"></span></span>
-        <span aria-hidden="true">·</span>
-        <span>Design by Rama Eka Yudha</span>
+        <span>Copyright © <span class="footYear"></span> · Design by Rama Eka Yudha</span>
+        <span id="statusSimpan" class="foot-status">Otomatis tersimpan</span>
       </footer>
     </section>
 
@@ -351,8 +380,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
   <button id="fabPreview" aria-label="Lihat pratinjau"><span data-ikon="mata"></span></button>
 </div>
 
-<!-- Lapisan pratinjau (mobile) -->
-<div id="previewOverlay">
+<!-- Lapisan pratinjau (mobile) — hidden sejak awal (perbaikan pra-login) -->
+<div id="previewOverlay" hidden>
   <div class="ov-head"><span>PRATINJAU</span><button class="btn ic g" id="btnTutupOverlay" aria-label="Tutup pratinjau"><span data-ikon="silang"></span></button></div>
   <div id="ovScroll"></div>
 </div>
@@ -372,14 +401,21 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
 'use strict';
 (() => {
 /* =====================================================================
-   THERMAL ME — v1.5
-   Perubahan dari v5:
-   - lebar logo kini bisa diedit bebas (10–100%) + preset cepat
-   - penomoran versi resmi: V1.5 (konstanta tunggal APP_VERSI,
-     penambahan berikutnya V1.6, dst.)
-   - pratinjau tidak pernah tampil kosong: seluruh UI dan pratinjau
-     dirender sinkron SEBELUM shell ditampilkan (masukApp) dan sebelum
-     overlay mobile dibuka (bukaPratinjauMobile)
+   THERMAL ME — v1.6
+   Perubahan dari v1.5:
+   - PRA-LOGIN BERSIH: overlay pratinjau kini hidden sejak awal
+     (perbaikan bug CSS: display:flex menimpa display:none — itulah
+     "tampilan pratinjau kosong" yang muncul sebelum form passphrase).
+   - Mode TERANG (default, ultra clean) + mode GELAP; toggle di layar
+     awal, bilah atas, dan Setelan. Preferensi disimpan di localStorage
+     (hanya berisi kata "terang"/"gelap" — bukan data sensitif).
+   - Simpan otomatis kini TERLIHAT (indikator waktu di footer) +
+     CADANGAN OTOMATIS harian terenkripsi + Pulihkan Cadangan.
+   - Blok Teks: rata kiri/tengah/kanan/JUSTIFY (justify = spasi
+     didistribusikan agar baris memenuhi lebar kertas).
+   - Blok Nomor Urut: tata letak 1 baris (label kiri, nomor kanan)
+     atau 2 baris (label di atas, nomor di bawah).
+   - Blok Tanggal: rata kiri/tengah/kanan/justify.
    Aturan keamanan di seluruh file ini:
    1. String pengguna HANYA masuk lewat .textContent / .value / atribut
       aman — tidak pernah lewat innerHTML (kecuali SVG statis kode sendiri).
@@ -388,11 +424,14 @@ body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--mono);-w
    4. Encoder ESC/POS mem-blokir byte kendali dari data pengguna
       (pencegahan injeksi perintah printer). Logo hanya data:image/,
       dirasterisasi sendiri di canvas.
-   5. Impor templat divalidasi menyeluruh (struktur, batas, whitelist)
-      dan semua ID diregenerasi — berkas asing tidak dipercaya.
+   5. Impor templat & pulihkan cadangan divalidasi menyeluruh
+      (struktur, whitelist, batas) — berkas asing tidak dipercaya.
+   6. Passphrase cadangan tersimpan di DALAM setelan terenkripsi
+      brankas; berkas cadangan dienkripsi dengannya (terpisah dari
+      passphrase brankas).
 ===================================================================== */
 
-const APP_VERSI = 'V1.5';
+const APP_VERSI = 'V1.6';
 const ITER = 600000;
 const MM = 96 / 25.4;
 const DBNAME = 'thermalme';
@@ -451,7 +490,9 @@ const IKON = {
   pasang:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>',
   dok:'<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/>',
   pena:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
-  chev:'<path d="M6 9l6 6 6-6"/>'
+  chev:'<path d="M6 9l6 6 6-6"/>',
+  matahari:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  bulan:'<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'
 };
 function ikonEl(nama, s = 18){
   const t = document.createElement('template');
@@ -577,7 +618,7 @@ const idbAll = st => new Promise((res, rej) => { const rq = DB.transaction(st, '
 
 /* ---------- state ---------- */
 const S = {
-  terbuka: false, kunci: null, meta: null,
+  terbuka: false, kunci: null, meta: null, tema: 'terang',
   setelan: null, templat: [], riwayat: [], draf: null,
   tplAktif: null, view: 'desain', resiDetail: null,
   cariRiwayat: '', kolapsed: new Set(),
@@ -587,7 +628,8 @@ const S = {
 };
 const defaultSetelan = () => ({
   kind: 'setelan', mataUang: 'Rp', desimal: 0, autoKunci: 5, zoom: 1.15, tplAktif: null,
-  cetak: { target: 'tanya', potong: 'penuh', umpan: 4, laci: false, baud: 9600 }
+  cetak: { target: 'tanya', potong: 'penuh', umpan: 4, laci: false, baud: 9600 },
+  backup: { aktif: false, pass: '', terakhir: 0 }
 });
 const tplAktif = () => S.templat.find(t => t.id === S.tplAktif) || null;
 
@@ -601,11 +643,17 @@ function cariObjek(id){
   const r = S.riwayat.find(x => x.id === id); if (r) return r;
   return null;
 }
+function perbaruiStatusSimpan(menyimpan){
+  const el = document.getElementById('statusSimpan');
+  if (!el) return;
+  el.textContent = menyimpan ? 'Menyimpan…' : 'Otomatis tersimpan ' + new Date().toLocaleTimeString('id-ID');
+}
 async function flush(){
   clearTimeout(S.flushTimer); S.flushTimer = null;
   if (!S.terbuka || !S.kunci){ S.dirty.clear(); return; }
   if (S.flushing){ S.flushLagi = true; return; }
   S.flushing = true;
+  perbaruiStatusSimpan(true);
   try {
     const ids = [...S.dirty]; S.dirty.clear();
     for (const id of ids){
@@ -618,7 +666,24 @@ async function flush(){
     }
   } finally {
     S.flushing = false;
+    perbaruiStatusSimpan(false);
     if (S.flushLagi){ S.flushLagi = false; flush(); }
+  }
+}
+
+/* ---------- tema terang / gelap ---------- */
+function setTema(mode, simpan = true){
+  const gelap = mode === 'gelap';
+  document.documentElement.classList.toggle('gelap', gelap);
+  S.tema = gelap ? 'gelap' : 'terang';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', gelap ? '#16130F' : '#F4F6F8');
+  /* Preferensi tema disimpan polos di localStorage — isinya hanya kata
+     "terang"/"gelap", bukan data sensitif. Semua data tetap terenkripsi. */
+  if (simpan){ try { localStorage.setItem('tm-tema', S.tema); } catch (e) {} }
+  for (const id of ['btnTema', 'btnTemaAuth']){
+    const b = document.getElementById(id);
+    if (b){ b.textContent = ''; b.append(ikonEl(gelap ? 'matahari' : 'bulan', 18)); }
   }
 }
 
@@ -673,6 +738,27 @@ function gridKertas(lebar, font){
 function padR(s, n){ s = String(s).slice(0, Math.max(0, n)); return s + ' '.repeat(Math.max(0, n - s.length)); }
 function padL(s, n){ s = String(s).slice(0, Math.max(0, n)); return ' '.repeat(Math.max(0, n - s.length)) + s; }
 function ctr(s, n){ s = String(s).slice(0, Math.max(0, n)); const sp = n - s.length; return ' '.repeat(Math.floor(sp / 2)) + s + ' '.repeat(Math.ceil(sp / 2)); }
+/* justify grid monospace: spasi tambahan didistribusikan merata ke
+   celah antar kata sehingga baris memenuhi lebar kolom persis. */
+function rataJustify(s, w){
+  s = String(s);
+  if (s.length >= w) return s.slice(0, w);
+  const katas = s.split(' ').filter(Boolean);
+  if (katas.length < 2) return s + ' '.repeat(w - s.length);
+  const kurang = w - s.length;
+  const celah = katas.length - 1;
+  const per = Math.floor(kurang / celah);
+  let sisa = kurang % celah;
+  let out = '';
+  for (let i = 0; i < katas.length; i++){
+    out += katas[i];
+    if (i < celah){
+      out += ' '.repeat(1 + per + (sisa > 0 ? 1 : 0));
+      if (sisa > 0) sisa--;
+    }
+  }
+  return out;
+}
 function bungkus(teks, wPertama, wSisa, indent){
   if (wSisa == null) wSisa = wPertama;
   const out = [];
@@ -745,8 +831,19 @@ function renderDoc(tpl, draf, set, mode){
         let uk = b.ukuran || 'N';
         if (font === 'B' && uk === 'S') uk = 'N';
         const w = wFor(uk);
-        for (const ln of bungkus(b.isi, w))
-          add(b.rata === 'kanan' ? padL(ln, w) : b.rata === 'tengah' ? ctr(ln, w) : padR(ln, w), uk, !!b.tebal, !!b.garisBawah);
+        if (b.rata === 'justify'){
+          /* justify per paragraf: semua baris dipenuhi kecuali baris
+             terakhir tiap paragraf (tetap rata kiri) — perilaku standar
+             tipografi, dihitung pada grid kolom printer. */
+          for (const par of String(b.isi ?? '').split('\n')){
+            const bar = bungkus(par, w);
+            for (let i = 0; i < bar.length; i++)
+              add(i === bar.length - 1 ? padR(bar[i], w) : rataJustify(bar[i], w), uk, !!b.tebal, !!b.garisBawah);
+          }
+        } else {
+          for (const ln of bungkus(b.isi, w))
+            add(b.rata === 'kanan' ? padL(ln, w) : b.rata === 'tengah' ? ctr(ln, w) : padR(ln, w), uk, !!b.tebal, !!b.garisBawah);
+        }
         break;
       }
       case 'logo': {
@@ -769,14 +866,30 @@ function renderDoc(tpl, draf, set, mode){
       case 'nomor': {
         const n = tokenisasi(b.format, tpl.seq || 1, waktu);
         nomor = n;
-        if (b.label) add(ctr(b.label, W));
-        if (b.besar) add(ctr(n, wFor('L')), 'L', true);
-        else add(ctr(n, W), 'N', true);
+        const lab = String(b.label || '');
+        if (b.tata === 'satu' && lab.length + n.length + 1 <= W){
+          /* 1 baris (justify): label rata kiri, nomor nempel kanan. */
+          add(padR(lab, Math.max(0, W - n.length)) + n);
+        } else {
+          if (lab) add(ctr(lab, W));
+          if (b.besar) add(ctr(n, wFor('L')), 'L', true);
+          else add(ctr(n, W), 'N', true);
+        }
         break;
       }
       case 'tanggal': {
         const v = tokenisasi(b.format, 0, waktu);
-        for (const ln of bungkus((b.label ? b.label + ' : ' : '') + v, W)) add(ln);
+        const rata = b.rata || 'kiri';
+        const labelP = b.label ? b.label + ' :' : '';
+        if (rata === 'justify' && labelP.length + v.length <= W){
+          add(padR(labelP, Math.max(0, W - v.length)) + v);
+        } else if (rata === 'kanan'){
+          for (const ln of bungkus(labelP ? labelP + ' ' + v : v, W)) add(padL(ln, W));
+        } else if (rata === 'tengah'){
+          for (const ln of bungkus(labelP ? labelP + ' ' + v : v, W)) add(ctr(ln, W));
+        } else {
+          for (const ln of bungkus((b.label ? b.label + ' : ' : '') + v, W)) add(ln);
+        }
         break;
       }
       case 'item': {
@@ -1071,8 +1184,7 @@ function encodeESCPOS(teks){
   return out;
 }
 
-/* ---- rasterisasi logo: canvas → dither Floyd–Steinberg → GS v 0 ----
-   posisi kiri/tengah/kanan = posisi gambar dalam pita selebar kertas. */
+/* ---- rasterisasi logo: canvas → dither Floyd–Steinberg → GS v 0 ---- */
 function muatGambar(src){
   return new Promise((res, rej) => {
     const i = new Image();
@@ -1129,9 +1241,7 @@ async function rasterLogo(src, pW, pct, pos){
   return { bytes: out, wBytes, h: hgt };
 }
 
-/* ---- penyusun byte ESC/POS (async karena raster logo) ----
-   ESC ! bit: 0x01 fontB · 0x08 tebal · 0x10 tinggi 2x · 0x20 lebar 2x ·
-   0x30 keduanya (Besar) · 0x80 garis bawah.                          */
+/* ---- penyusun byte ESC/POS (async karena raster logo) ---- */
 async function escposBuat(lines, cetak, fontBase, g){
   const b = [0x1B, 0x40];
   let modeAkhir = -1;
@@ -1521,8 +1631,8 @@ function blokBaru(type){
     case 'field':   return { id, type, baris: [{ label: 'Label', nilai: '' }] };
     case 'item':    return { id, type, kolom: { qty: true, harga: true, subtot: true, satuan: false, diskon: false }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true };
     case 'total':   return { id, type, diskonMode: 'tanpa', pajakMode: 'tanpa', pembulatan: 0, tampilBayar: true, label: {} };
-    case 'nomor':   return { id, type, label: 'No. Resi', format: 'TM-{YYYY}{MM}-{seq:4}', besar: false };
-    case 'tanggal': return { id, type, label: 'Tanggal', format: '{DD}/{MM}/{YYYY} {HH}:{mm}' };
+    case 'nomor':   return { id, type, label: 'No. Resi', format: 'TM-{YYYY}{MM}-{seq:4}', besar: false, tata: 'dua' };
+    case 'tanggal': return { id, type, label: 'Tanggal', format: '{DD}/{MM}/{YYYY} {HH}:{mm}', rata: 'kiri' };
     case 'garis':   return { id, type, gaya: 'putus' };
     case 'spasi':   return { id, type, baris: 2 };
     case 'ttd':     return { id, type, label: 'Penerima', baris: 3 };
@@ -1534,9 +1644,9 @@ function presetTemplat(jenis){
   if (jenis === 'nota') return { id: uid(), nama: 'Nota Pelanggan', kertas: { lebar: 80 }, font: 'A', seq: 1, blok: [
     B({ type: 'logo', gambar: null, lebar: 80, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'NOTA', rata: 'tengah', ukuran: 'L', tebal: true }),
-    B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', besar: false }),
+    B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', besar: false, tata: 'satu' }),
     B({ type: 'field', baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }] }),
-    B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY}' }),
+    B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY}', rata: 'kiri' }),
     B({ type: 'garis', gaya: 'penuh' }),
     B({ type: 'item', kolom: { qty: true, harga: true, subtot: true, satuan: true, diskon: true }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true }),
     B({ type: 'total', diskonMode: 'nominal', pajakMode: 'persen', pembulatan: 0, tampilBayar: false, label: { pajak: 'PPN' } }),
@@ -1544,7 +1654,7 @@ function presetTemplat(jenis){
   ]};
   if (jenis === 'kirim') return { id: uid(), nama: 'Resi Pengiriman', kertas: { lebar: 80 }, font: 'A', seq: 1, blok: [
     B({ type: 'teks', isi: 'RESI PENGIRIMAN', rata: 'tengah', ukuran: 'L', tebal: true }),
-    B({ type: 'nomor', label: '', format: 'KIR{YY}{MM}{seq:5}', besar: true }),
+    B({ type: 'nomor', label: '', format: 'KIR{YY}{MM}{seq:5}', besar: true, tata: 'dua' }),
     B({ type: 'garis', gaya: 'putus' }),
     B({ type: 'field', baris: [
       { label: 'Pengirim', nilai: '' }, { label: 'Telp', nilai: '' }, { label: 'Asal', nilai: '' },
@@ -1566,8 +1676,8 @@ function presetTemplat(jenis){
     B({ type: 'teks', isi: 'TOKO BERKAH JAYA', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'teks', isi: 'Jl. Merdeka No. 12, Bandung\n0812-3456-7890', rata: 'tengah', ukuran: 'S', tebal: false }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'nomor', label: 'No. Struk', format: 'S-{YYYY}{MM}-{seq:4}', besar: false }),
-    B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY} {HH}:{mm}' }),
+    B({ type: 'nomor', label: 'No. Struk', format: 'S-{YYYY}{MM}-{seq:4}', besar: false, tata: 'satu' }),
+    B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY} {HH}:{mm}', rata: 'kiri' }),
     B({ type: 'item', kolom: { qty: true, harga: true, subtot: true, satuan: false, diskon: false }, label: {}, header: true }),
     B({ type: 'total', diskonMode: 'tanpa', pajakMode: 'tanpa', pembulatan: 0, tampilBayar: true, label: { bayar: 'TUNAI' } }),
     B({ type: 'garis', gaya: 'putus' }),
@@ -1576,7 +1686,7 @@ function presetTemplat(jenis){
   ]};
 }
 /* migrasi + pembersihan menyeluruh — dipakai untuk data lama
-   DAN untuk berkas impor yang tidak dipercaya (whitelist ketat) */
+   DAN untuk berkas impor/cadangan yang tidak dipercaya */
 function migrasiTemplat(t){
   if (!t || typeof t !== 'object' || Array.isArray(t)) return null;
   if (typeof t.nama !== 'string') t.nama = 'Templat';
@@ -1591,7 +1701,7 @@ function migrasiTemplat(t){
     if (!b.id) b.id = uid();
     if (b.type === 'teks'){
       b.isi = String(b.isi ?? '').slice(0, 2000);
-      b.rata = ['kiri', 'tengah', 'kanan'].includes(b.rata) ? b.rata : 'kiri';
+      b.rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
       b.ukuran = ['S', 'N', 'H', 'W', 'L'].includes(b.ukuran) ? b.ukuran : 'N';
       b.tebal = !!b.tebal;
       b.garisBawah = !!b.garisBawah;
@@ -1620,10 +1730,16 @@ function migrasiTemplat(t){
       b.pembulatan = clampInt(num(b.pembulatan), 0, 100000);
       b.tampilBayar = !!b.tampilBayar;
     }
-    if (b.type === 'nomor' || b.type === 'tanggal'){
+    if (b.type === 'nomor'){
       b.label = String(b.label ?? '').slice(0, 30);
       b.format = String(b.format ?? '').slice(0, 40);
-      if (b.type === 'nomor') b.besar = !!b.besar;
+      b.besar = !!b.besar;
+      b.tata = ['dua', 'satu'].includes(b.tata) ? b.tata : 'dua';
+    }
+    if (b.type === 'tanggal'){
+      b.label = String(b.label ?? '').slice(0, 30);
+      b.format = String(b.format ?? '').slice(0, 40);
+      b.rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
     }
     if (b.type === 'garis') b.gaya = ['putus', 'penuh', 'ganda'].includes(b.gaya) ? b.gaya : 'putus';
     if (b.type === 'spasi') b.baris = clampInt(b.baris, 0, 20);
@@ -1636,6 +1752,33 @@ function migrasiTemplat(t){
     }
   }
   return t;
+}
+/* sanitasi resi dari berkas cadangan (tidak dipercaya) */
+function migrasiResi(r){
+  if (!r || typeof r !== 'object' || Array.isArray(r)) return null;
+  const o = { kind: 'resi' };
+  o.id = (typeof r.id === 'string' && r.id) ? r.id : uid();
+  o.nomor = String(r.nomor ?? '').slice(0, 60);
+  o.tplId = String(r.tplId ?? '');
+  o.tplNama = String(r.tplNama ?? '').slice(0, 60);
+  o.lebar = clampInt(num(r.lebar) || 58, 30, 300);
+  o.font = r.font === 'B' ? 'B' : 'A';
+  o.waktu = num(r.waktu) || Date.now();
+  o.batal = !!r.batal;
+  o.total = Math.round(num(r.total) * 100) / 100;
+  o.lines = Array.isArray(r.lines)
+    ? r.lines.slice(0, 3000).map(l => {
+        if (l && typeof l === 'object' && l.logo) return { logo: true, ref: String(l.ref ?? '').slice(0, 64), wPct: clampInt(num(l.wPct) || 100, 10, 100), rasio: num(l.rasio) || 0.35, pos: posLogo(l.pos) };
+        if (l && typeof l === 'object') return { t: String(l.t ?? '').slice(0, 400), s: ['S', 'N', 'H', 'W', 'L'].includes(l.s) ? l.s : 'N', b: !!l.b, u: !!l.u };
+        return { t: '', s: 'N', b: false, u: false };
+      })
+    : [];
+  o.data = (r.data && typeof r.data === 'object')
+    ? { field: (r.data.field && typeof r.data.field === 'object') ? r.data.field : {},
+        item: (r.data.item && typeof r.data.item === 'object') ? r.data.item : {},
+        total: (r.data.total && typeof r.data.total === 'object') ? r.data.total : {} }
+    : { field: {}, item: {}, total: {} };
+  return o;
 }
 function drafBaru(tpl){
   const d = { kind: 'draf', tplId: tpl.id, field: {}, item: {}, total: {} };
@@ -1710,7 +1853,7 @@ function ringkasBlok(b){
     case 'item':    return 'tabel item';
     case 'logo':    return b.gambar ? (clampInt(b.lebar || 100, 10, 100) + '% · ' + posLogo(b.posisi)) : 'belum ada gambar';
     case 'total':   return [b.diskonMode !== 'tanpa' ? 'diskon' : null, b.pajakMode !== 'tanpa' ? 'pajak' : null, b.tampilBayar ? 'bayar' : null].filter(Boolean).join(' · ') || 'subtotal saja';
-    case 'nomor':   return b.format || '';
+    case 'nomor':   return (b.format || '') + (b.tata === 'satu' ? ' · 1 baris' : '');
     case 'tanggal': return b.format || '';
     case 'garis':   return b.gaya || '';
     case 'spasi':   return (b.baris || 0) + ' baris';
@@ -1805,10 +1948,11 @@ function badanBlok(tpl, b){
       badan.append(
         ta,
         h('div', { style: { display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' } },
-          seg([{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }], b.rata || 'kiri', v => { b.rata = v; ubahTemplat(tpl); }),
+          seg([{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }, { v: 'justify', l: 'Justify' }], b.rata || 'kiri', v => { b.rata = v; ubahTemplat(tpl); }),
           seg([{ v: 'S', l: 'Kecil' }, { v: 'N', l: 'Normal' }, { v: 'H', l: '2x Tinggi' }, { v: 'W', l: '2x Lebar' }, { v: 'L', l: 'Besar' }], b.ukuran || 'N', v => { b.ukuran = v; ubahTemplat(tpl); }),
           h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.tebal, onchange: e => { b.tebal = e.target.checked; ubahTemplat(tpl); } }), 'Tebal'),
-          h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.garisBawah, onchange: e => { b.garisBawah = e.target.checked; ubahTemplat(tpl); } }), 'Garis bawah')));
+          h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.garisBawah, onchange: e => { b.garisBawah = e.target.checked; ubahTemplat(tpl); } }), 'Garis bawah')),
+        h('p', { class: 'bantuan' }, 'Justify: baris dipenuhi sampai tepi kanan (spasi antar kata didistribusikan); baris terakhir tiap paragraf tetap rata kiri — persis perilaku typographic justify pada grid printer.'));
       break;
     }
     case 'logo': {
@@ -1822,7 +1966,6 @@ function badanBlok(tpl, b){
       if (typeof b.gambar === 'string' && b.gambar){
         pratinjau.append(h('img', { src: b.gambar, alt: 'logo', style: { maxWidth: '100%', maxHeight: '90px' } }));
       } else pratinjau.append(h('span', { class: 'sub' }, 'Belum ada gambar — unggah logo toko/brand Anda'));
-      /* ukuran logo: preset cepat + input kustom 10–100% */
       const inpLebar = h('input', { class: 'inp', type: 'number', min: 10, max: 100, step: 1,
         value: clampInt(b.lebar || 100, 10, 100), style: { width: '90px' },
         title: 'Lebar kustom dalam persen (10–100)' });
@@ -1830,7 +1973,7 @@ function badanBlok(tpl, b){
         b.lebar = clampInt(e.target.value, 10, 100);
         e.target.value = b.lebar;
         ubahTemplat(tpl);
-        renderDesain(); // segarkan agar sorotan preset ikut akurat
+        renderDesain();
       });
       badan.append(fileInp, pratinjau,
         h('div', { class: 'aksi-baris' },
@@ -1912,9 +2055,12 @@ function badanBlok(tpl, b){
         h('div', {}, h('span', { class: 'lbl' }, 'Label'), inpL),
         h('div', {}, h('span', { class: 'lbl' }, 'Format'), inpF),
         h('p', { class: 'bantuan' }, 'Token: {YYYY} {YY} {MM} {DD} {HH} {mm} {seq:4}. Contoh: TM-{YYYY}{MM}-{seq:4} → ' + tokenisasi(b.format || '', tpl.seq || 1, new Date())),
+        h('div', {}, h('span', { class: 'lbl' }, 'Tata letak'),
+          seg([{ v: 'dua', l: '2 Baris' }, { v: 'satu', l: '1 Baris (justify)' }], b.tata || 'dua', v => { b.tata = v; ubahTemplat(tpl); })),
+        h('p', { class: 'bantuan' }, '2 Baris: label di atas, nomor di bawah (tengah). 1 Baris: label nempel kiri, nomor nempel kanan — bila tidak muat otomatis kembali ke 2 baris; mode 1 baris memakai gaya normal (pilihan "besar" diabaikan).'),
         h('div', {}, h('span', { class: 'lbl' }, 'Nomor urut berikutnya'), inpSeq),
         h('p', { class: 'bantuan' }, 'Naik +1 otomatis tiap resi disimpan. Ubah manual bila perlu (mis. koreksi setelah salah cetak).'),
-        h('label', { class: 'cek' }, h('input', { type: 'checkbox', checked: !!b.besar, onchange: e => { b.besar = e.target.checked; ubahTemplat(tpl); } }), 'Tampilkan besar (2x)'));
+        h('label', { class: 'cek' }, h('input', { type: 'checkbox', checked: !!b.besar, onchange: e => { b.besar = e.target.checked; ubahTemplat(tpl); } }), 'Tampilkan besar (2x) — mode 2 baris'));
       break;
     }
     case 'tanggal': {
@@ -1925,7 +2071,9 @@ function badanBlok(tpl, b){
       badan.append(
         h('div', {}, h('span', { class: 'lbl' }, 'Label'), inpL),
         h('div', {}, h('span', { class: 'lbl' }, 'Format'), inpF),
-        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date())));
+        h('div', {}, h('span', { class: 'lbl' }, 'Perataan'),
+          seg([{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }, { v: 'justify', l: 'Justify' }], b.rata || 'kiri', v => { b.rata = v; ubahTemplat(tpl); })),
+        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date()) + '. Justify: label nempel kiri, tanggal nempel kanan (jatuh ke kiri bila tidak muat).'));
       break;
     }
     case 'garis':
@@ -2158,7 +2306,7 @@ async function cetakDraf(){
 }
 
 /* =====================================================================
-   TAMPILAN: RIWAYAT (+ pilihan massal + kosongkan)
+   TAMPILAN: RIWAYAT
 ===================================================================== */
 function perbaruiHitungPilih(){
   const b = document.getElementById('btnHapusTerpilih');
@@ -2469,6 +2617,168 @@ function terapkanImpor(arr){
 }
 
 /* =====================================================================
+   CADANGAN OTOMATIS (backup terenkripsi) + PULIHKAN
+===================================================================== */
+function dataCadangan(){
+  return {
+    templat: S.templat.map(t => { const c = JSON.parse(JSON.stringify(t)); delete c.kind; return c; }),
+    riwayat: S.riwayat.map(r => { const c = JSON.parse(JSON.stringify(r)); delete c.kind; return c; }),
+    draf: S.draf ? JSON.parse(JSON.stringify(S.draf)) : null,
+    setelan: JSON.parse(JSON.stringify(S.setelan))
+  };
+}
+async function buatCadangan(pass){
+  const payload = { app: 'THERMALME', tipe: 'backup', versi: 1, dibuat: Date.now(), data: dataCadangan() };
+  const salt = rand(16);
+  const k = await turunkan(pass, salt, ITER);
+  const { iv, ct } = await sealJSON(k, payload);
+  return {
+    isi: JSON.stringify({ app: 'THERMALME', tipe: 'backup-enc', versi: 1, dibuat: Date.now(), salt: b64dari(salt), iv: b64dari(iv), ct: b64dari(ct) }),
+    nama: 'thermalme-cadangan-' + tokenisasi('{YYYY}{MM}{DD}-{HH}{mm}', 0, new Date()) + '.json'
+  };
+}
+async function cadangkanSekarang(){
+  const bk = S.setelan.backup || (S.setelan.backup = { aktif: false, pass: '', terakhir: 0 });
+  if (!bk.pass){
+    const pass = await modalPassCadangan();
+    if (!pass) return;
+    bk.pass = pass; tandaiKotor('setelan');
+  }
+  try {
+    const { isi, nama } = await buatCadangan(bk.pass);
+    unduhFile(nama, isi);
+    bk.terakhir = Date.now(); tandaiKotor('setelan'); flush();
+    toast('Cadangan terenkripsi diunduh.', 'ok');
+  } catch (e){ toast('Cadangan gagal: ' + e.message, 'err'); }
+}
+async function cadanganOtomatis(){
+  try {
+    const bk = S.setelan.backup;
+    if (!bk || !bk.aktif || !bk.pass) return;
+    if (bk.terakhir && Date.now() - bk.terakhir < 20 * 3600 * 1000) return;
+    const { isi, nama } = await buatCadangan(bk.pass);
+    unduhFile(nama, isi);
+    bk.terakhir = Date.now(); tandaiKotor('setelan'); flush();
+    toast('Cadangan otomatis harian diunduh (terenkripsi).', 'ok');
+  } catch (e) {}
+}
+function modalPassCadangan(){
+  return new Promise(res => {
+    const inp = h('input', { type: 'password', class: 'inp', maxlength: 128, autocomplete: 'new-password' });
+    const err = h('div', { class: 'err' });
+    const selesai = v => { modalSelesai = null; tutupModal(); res(v); };
+    const btn = h('button', { class: 'btn p', onclick: () => {
+      if (inp.value.length < 8){ err.textContent = 'Passphrase minimal 8 karakter.'; return; }
+      selesai(inp.value);
+    } }, 'Simpan');
+    modalHasil(() => selesai(null));
+    bukaModal(h('div', {},
+      h('h3', {}, 'Passphrase Cadangan'),
+      h('p', { class: 'sub' }, 'Mengenkripsi berkas cadangan — terpisah dari passphrase brankas. Tanpa passphrase ini berkas cadangan tidak dapat dibuka; simpan di tempat aman. Tersimpan terenkripsi di dalam brankas.'),
+      h('div', { style: { marginTop: '12px' } }, h('span', { class: 'lbl' }, 'Passphrase (min. 8)'), inp),
+      err,
+      h('div', { class: 'm-aksi' },
+        h('button', { class: 'btn g', onclick: () => selesai(null) }, 'Batal'),
+        btn)));
+  });
+}
+function modalPulihkan(){
+  const fileInp = h('input', { type: 'file', accept: '.json,application/json', style: { display: 'none' } });
+  fileInp.addEventListener('change', async e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    modalSelesai = null; tutupModal();
+    await prosesCadanganFile(file);
+  });
+  modalHasil(() => { modalSelesai = null; tutupModal(); });
+  bukaModal(h('div', {},
+    h('h3', {}, 'Pulihkan Cadangan'),
+    h('p', { class: 'sub' }, 'Pilih berkas cadangan Thermal Me (.json).'),
+    h('p', { class: 'bantuan' }, 'Pulihkan MENGGANTI seluruh templat, riwayat, dan setelan saat ini dengan isi berkas. Passphrase brankas tidak berubah. Berkas divalidasi penuh (struktur, whitelist, batas jumlah) sebelum diterapkan.'),
+    fileInp,
+    h('div', { class: 'm-aksi' },
+      h('button', { class: 'btn g', onclick: () => { modalSelesai = null; tutupModal(); } }, 'Batal'),
+      h('button', { class: 'btn p', onclick: () => fileInp.click() }, 'Pilih Berkas'))));
+}
+async function prosesCadanganFile(file){
+  if (file.size > 16 * 1024 * 1024){ toast('Berkas terlalu besar (maks 16MB).', 'err'); return; }
+  let obj = null;
+  try { obj = JSON.parse(await bacaFileTeks(file)); }
+  catch (e){ toast('Berkas bukan JSON yang valid.', 'err'); return; }
+  if (!obj || obj.app !== 'THERMALME' || obj.tipe !== 'backup-enc'){ toast('Berkas bukan cadangan Thermal Me.', 'err'); return; }
+  const hasil = await modalPassPulihkan(obj);
+  if (!hasil) return;
+  const data = hasil.data;
+  const templat = Array.isArray(data.templat) ? data.templat.slice(0, 200).map(migrasiTemplat).filter(Boolean) : [];
+  const riwayat = Array.isArray(data.riwayat) ? data.riwayat.slice(0, 5000).map(migrasiResi).filter(Boolean) : [];
+  if (!templat.length && !riwayat.length){ toast('Berkas tidak berisi data yang valid.', 'err'); return; }
+  const setSrc = (data.setelan && typeof data.setelan === 'object') ? data.setelan : {};
+  const bkSrc = (setSrc.backup && typeof setSrc.backup === 'object') ? setSrc.backup : {};
+  const setelanBaru = {
+    ...defaultSetelan(), ...setSrc,
+    cetak: { ...defaultSetelan().cetak, ...(setSrc.cetak || {}) },
+    backup: { aktif: !!bkSrc.aktif, pass: String(bkSrc.pass ?? '').slice(0, 128), terakhir: num(bkSrc.terakhir) }
+  };
+  const drafBaru = (data.draf && typeof data.draf === 'object' && templat.some(t => t.id === data.draf.tplId)) ? data.draf : null;
+  const dibuat = num(hasil.dibuat) ? fmtWaktu(num(hasil.dibuat)) : 'tidak diketahui';
+  const ok = await modalKetikKonfirmasi({
+    judul: 'Pulihkan cadangan?',
+    pesan: 'Berkas berisi ' + templat.length + ' templat dan ' + riwayat.length + ' resi (dibuat ' + dibuat + '). Seluruh data saat ini akan DIGANTI dengan isi berkas. Passphrase brankas tidak berubah.',
+    kataKunci: 'RESTOR', ya: 'Pulihkan'
+  });
+  if (!ok) return;
+  terapkanRestor(templat, riwayat, setelanBaru, drafBaru);
+}
+function modalPassPulihkan(obj){
+  return new Promise(res => {
+    const inp = h('input', { type: 'password', class: 'inp', maxlength: 128, autocomplete: 'current-password' });
+    const err = h('div', { class: 'err' });
+    const selesai = v => { modalSelesai = null; tutupModal(); res(v); };
+    const btn = h('button', { class: 'btn p', onclick: async () => {
+      btn.disabled = true; btn.textContent = 'Membuka…';
+      try {
+        const k = await turunkan(inp.value, b64ke(obj.salt), ITER);
+        const payload = await openJSON(k, b64ke(obj.iv), b64ke(obj.ct));
+        if (!payload || payload.tipe !== 'backup' || !payload.data || typeof payload.data !== 'object') throw new Error('rusak');
+        selesai({ data: payload.data, dibuat: payload.dibuat });
+      } catch (e){
+        err.textContent = 'Passphrase salah atau berkas rusak.';
+        btn.disabled = false; btn.textContent = 'Buka';
+      }
+    } }, 'Buka');
+    modalHasil(() => selesai(null));
+    bukaModal(h('div', {},
+      h('h3', {}, 'Cadangan Terenkripsi'),
+      h('p', { class: 'sub' }, 'Masukkan passphrase cadangan.'),
+      h('div', { style: { marginTop: '12px' } }, h('span', { class: 'lbl' }, 'Passphrase'), inp),
+      err,
+      h('div', { class: 'm-aksi' },
+        h('button', { class: 'btn g', onclick: () => selesai(null) }, 'Batal'),
+        btn)));
+  });
+}
+function terapkanRestor(templat, riwayat, setelanBaru, drafBaru){
+  const lama = new Set();
+  for (const t of S.templat) lama.add(t.id);
+  for (const r of S.riwayat) lama.add(r.id);
+  S.templat = templat;
+  S.riwayat = riwayat.sort((a, b) => b.waktu - a.waktu);
+  S.setelan = setelanBaru;
+  S.draf = drafBaru;
+  S.tplAktif = S.templat.some(t => t.id === S.setelan.tplAktif) ? S.setelan.tplAktif : (S.templat[0] ? S.templat[0].id : null);
+  S.resiDetail = null; S.pilihRiwayat = false; S.terpilihRiwayat = new Set(); S.kolapsed.clear();
+  tandaiKotor('setelan'); tandaiKotor('draf');
+  for (const t of S.templat) tandaiKotor(t.id);
+  for (const r of S.riwayat) tandaiKotor(r.id);
+  const baru = new Set([...S.templat.map(t => t.id), ...S.riwayat.map(r => r.id)]);
+  for (const id of lama) if (!baru.has(id)) tandaiKotor(id);
+  flush();
+  setView(S.view);
+  toast('Cadangan dipulihkan: ' + templat.length + ' templat, ' + riwayat.length + ' resi.', 'ok');
+}
+
+/* =====================================================================
    TAMPILAN: SETELAN
 ===================================================================== */
 function renderSetelan(){
@@ -2481,6 +2791,8 @@ function renderSetelan(){
   inpUang.addEventListener('input', e => { st.mataUang = e.target.value; tandaiKotor('setelan'); mintaPratinjau(); });
   root.append(h('div', { class: 'sek' },
     h('p', { class: 'sek-t' }, 'UMUM'),
+    h('div', { style: { marginBottom: '12px' } }, h('span', { class: 'lbl' }, 'Tema tampilan'),
+      seg([{ v: 'terang', l: 'Terang (bersih)' }, { v: 'gelap', l: 'Gelap' }], S.tema, v => setTema(v))),
     h('div', { style: { marginBottom: '12px' } }, h('span', { class: 'lbl' }, 'Simbol mata uang'), inpUang),
     h('div', { style: { marginBottom: '12px' } }, h('span', { class: 'lbl' }, 'Angka desimal'),
       seg([{ v: 0, l: '0 (Rp1.000)' }, { v: 2, l: '2 (Rp1.000,00)' }], st.desimal, v => { st.desimal = v; tandaiKotor('setelan'); mintaPratinjau(); })),
@@ -2531,18 +2843,44 @@ function renderSetelan(){
     h('div', { class: 'info-baris' }, h('span', {}, 'Turunan kunci'), h('span', {}, 'PBKDF2-SHA256 · ' + (S.meta ? S.meta.iter.toLocaleString('id-ID') : ITER.toLocaleString('id-ID')) + ' iterasi')),
     h('div', { class: 'info-baris' }, h('span', {}, 'Lokasi data'), h('span', {}, 'Hanya perangkat ini (IndexedDB)')),
     h('div', { class: 'info-baris' }, h('span', {}, 'Koneksi printer'), h('span', {}, 'Sesi ini saja — diputus saat brankas dikunci')),
-    h('div', { class: 'info-baris' }, h('span', {}, 'Impor templat'), h('span', {}, 'Divalidasi penuh, ID diregenerasi')),
+    h('div', { class: 'info-baris' }, h('span', {}, 'Impor & pulihkan'), h('span', {}, 'Divalidasi penuh, ID diperiksa')),
     h('div', { style: { marginTop: '14px' } },
       h('button', { class: 'btn', onclick: modalGantiPass }, ikonEl('kunci', 15), 'Ganti Passphrase'))));
 
+  const bk = st.backup || (st.backup = { aktif: false, pass: '', terakhir: 0 });
   root.append(h('div', { class: 'sek' },
-    h('p', { class: 'sek-t' }, 'DATA'),
+    h('p', { class: 'sek-t' }, 'DATA & CADANGAN'),
+    h('div', { class: 'info-baris' }, h('span', {}, 'Simpan otomatis'), h('span', { class: 'sub' }, 'Aktif — setiap perubahan langsung terenkripsi')),
     h('div', { class: 'info-baris' }, h('span', {}, 'Jumlah templat'), h('span', {}, String(S.templat.length))),
     h('div', { class: 'info-baris' }, h('span', {}, 'Jumlah resi'), h('span', {}, String(S.riwayat.length))),
-    h('div', { style: { marginTop: '14px', display: 'flex', gap: '8px', flexWrap: 'wrap' } },
-      h('button', { class: 'btn', onclick: modalEksporTemplat }, ikonEl('salin', 15), 'Ekspor Templat'),
-      h('button', { class: 'btn', onclick: modalImporTemplat }, ikonEl('plus', 15), 'Impor Templat')),
-    h('div', { style: { marginTop: '10px' } },
+    h('div', { class: 'info-baris' }, h('span', {}, 'Cadangan otomatis'), h('span', { class: 'sub' },
+      bk.aktif ? ('Aktif · terakhir ' + (bk.terakhir ? fmtWaktu(bk.terakhir) : 'belum ada')) : 'Mati')),
+    h('label', { class: 'cek' }, h('input', { type: 'checkbox', checked: !!bk.aktif, onchange: async e => {
+      const aktif = e.target.checked;
+      if (aktif && !bk.pass){
+        e.target.checked = false;
+        const pass = await modalPassCadangan();
+        if (pass){
+          bk.pass = pass; bk.aktif = true; bk.terakhir = 0;
+          tandaiKotor('setelan'); renderSetelan();
+          toast('Cadangan otomatis aktif — berkas diunduh maks. 1×/hari.', 'ok');
+        } else renderSetelan();
+      } else {
+        bk.aktif = aktif; tandaiKotor('setelan'); renderSetelan();
+      }
+    } }), 'Cadangkan otomatis setiap hari (berkas terenkripsi ke folder Unduhan)'),
+    h('div', { class: 'aksi-baris', style: { marginTop: '10px' } },
+      h('button', { class: 'btn sm', onclick: cadangkanSekarang }, ikonEl('salin', 14), 'Cadangkan Sekarang'),
+      h('button', { class: 'btn sm g', onclick: modalPulihkan }, ikonEl('pasang', 14), 'Pulihkan Cadangan'),
+      bk.pass ? h('button', { class: 'btn sm g', onclick: async () => {
+        const p = await modalPassCadangan();
+        if (p){ bk.pass = p; tandaiKotor('setelan'); toast('Passphrase cadangan diganti.', 'ok'); }
+      } }, 'Ganti Pass Cadangan') : null),
+    h('div', { class: 'aksi-baris', style: { marginTop: '8px' } },
+      h('button', { class: 'btn sm', onclick: modalEksporTemplat }, ikonEl('dok', 14), 'Ekspor Templat'),
+      h('button', { class: 'btn sm g', onclick: modalImporTemplat }, ikonEl('plus', 14), 'Impor Templat')),
+    h('p', { class: 'bantuan' }, 'Cadangan berisi seluruh templat, riwayat, draf, dan setelan — dienkripsi AES-256-GCM dengan passphrase cadangan (terpisah dari passphrase brankas; tersimpan terenkripsi di dalam brankas). "Pulihkan" mengganti seluruh data saat ini dengan isi berkas; passphrase brankas tetap. Cadangan otomatis diunduh maksimal satu kali per hari saat aplikasi dibuka — browser mungkin meminta izin unduhan sekali di awal.'),
+    h('div', { style: { marginTop: '12px' } },
       h('button', { class: 'btn d', onclick: async () => {
         if (await modalKetikKonfirmasi({ judul: 'Hapus SEMUA data?', pesan: 'Seluruh templat, riwayat, dan brankas akan dihapus permanen dari perangkat ini. Tidak bisa dibatalkan.' })){
           await hapusSemua();
@@ -2624,9 +2962,16 @@ async function muatSemua(){
   for (const r of recs){
     try {
       const p = await openJSON(S.kunci, r.iv, r.ct);
-      if (p.kind === 'setelan') S.setelan = { ...defaultSetelan(), ...p, cetak: { ...defaultSetelan().cetak, ...(p.cetak || {}) } };
+      if (p.kind === 'setelan'){
+        const bkSrc = (p.backup && typeof p.backup === 'object') ? p.backup : {};
+        S.setelan = {
+          ...defaultSetelan(), ...p,
+          cetak: { ...defaultSetelan().cetak, ...(p.cetak || {}) },
+          backup: { aktif: !!bkSrc.aktif, pass: String(bkSrc.pass ?? '').slice(0, 128), terakhir: num(bkSrc.terakhir) }
+        };
+      }
       else if (p.kind === 'templat'){ const m = migrasiTemplat(p); if (m) S.templat.push(m); else korup++; }
-      else if (p.kind === 'resi'){ p.font = p.font === 'B' ? 'B' : 'A'; S.riwayat.push(p); }
+      else if (p.kind === 'resi'){ const m = migrasiResi(p); if (m) S.riwayat.push(m); else korup++; }
       else if (p.kind === 'draf') S.draf = p;
     } catch (e){ korup++; }
   }
@@ -2640,14 +2985,12 @@ function masukApp(){
   S.terbuka = true;
   if (S.tick){ clearInterval(S.tick); S.tick = null; }
   $('#inpPassBuka').value = '';
-  /* PENTING: seluruh UI + pratinjau dirender SINKRON lebih dulu;
-     shell baru ditampilkan setelah kertas berisi. Ini menghilangkan
-     kilatan kertas kosong yang tadinya muncul saat pertama masuk. */
   setView('desain');
   renderPreview();
   $('#layarAuth').hidden = true;
   $('#shell').hidden = false;
   sambungOtomatisSemua();
+  cadanganOtomatis();
 }
 async function kunci(manual){
   if (!S.terbuka) return;
@@ -2722,7 +3065,7 @@ function setView(v){
 function bukaPratinjauMobile(){
   $('#previewOverlay').hidden = false;
   $('#ovScroll').append($('#paperWrap'));
-  renderPreview(); // sinkron: kertas sudah berisi saat overlay terlihat
+  renderPreview();
 }
 function tutupPratinjauMobile(){
   if ($('#previewOverlay').hidden) return;
@@ -2734,6 +3077,9 @@ function tutupPratinjauMobile(){
 function ikatKejadian(){
   $$('#navTabs button, #tabbar button').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
   $('#btnKunci').addEventListener('click', () => kunci(true));
+  const gantiTema = () => setTema(S.tema === 'gelap' ? 'terang' : 'gelap');
+  $('#btnTema').addEventListener('click', gantiTema);
+  $('#btnTemaAuth').addEventListener('click', gantiTema);
   $('#fabPreview').addEventListener('click', bukaPratinjauMobile);
   $('#btnTutupOverlay').addEventListener('click', tutupPratinjauMobile);
   $('#pvZoomIn').addEventListener('click', () => ubahZoom(.15));
@@ -2848,6 +3194,12 @@ function daftarSW(){
   $('#versiApp').textContent = APP_VERSI;
   $('#pvZoomVal').textContent = '×' + (1.15).toFixed(2);
   $$('.footYear').forEach(el => { el.textContent = String(new Date().getFullYear()); });
+  /* tema awal: default TERANG; pilihan tersimpan di localStorage */
+  try {
+    setTema(localStorage.getItem('tm-tema') === 'gelap' ? 'gelap' : 'terang', false);
+  } catch (e){ setTema('terang', false); }
+  /* jaminan ekstra: lapisan pratinjau mobile tersembunyi pra-login */
+  $('#previewOverlay').hidden = true;
   try {
     DB = await bukaDB();
     const meta = await idbGet('meta', 'v');
