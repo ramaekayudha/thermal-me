@@ -1,13 +1,9 @@
-/* THERMAL ME — Service Worker (v1.7)
-   Cache-first, sepenuhnya offline setelah kunjungan pertama.
-   Nama cache wajib dinaikkan setiap kali index.html berubah —
-   cache lama otomatis dihapus agar versi lama tidak tersajikan.
-   v1.7: logo.png ikut di-cache; caching dilakukan PER ASET —
-   bila suatu saat file logo tidak ada, instalasi offline tetap
-   berhasil (logo hanya hilang tampilannya, aplikasi tetap jalan). */
+/* THERMAL ME — Service Worker (v1.7-play)
+   Cache-first, offline penuh. Nama cache dinaikkan karena manifest.json
+   berubah (iklan ukuran 512x512). Aplikasi tetap V1.7. */
 'use strict';
 
-const CACHE = 'thermalme-v1.7';
+const CACHE = 'thermalme-v1.7-play';
 const ASET = ['./', './index.html', './manifest.json', './logo.png'];
 
 self.addEventListener('install', e => {
