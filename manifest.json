@@ -1,0 +1,28 @@
+{
+  "id": "./",
+  "name": "Thermal Me — Pembuat Resi",
+  "short_name": "Thermal Me",
+  "description": "Pembuat resi, struk, dan nota kustom. Offline penuh, data terenkripsi di perangkat, siap cetak ke printer thermal.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#16130F",
+  "theme_color": "#16130F",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20rx='112'%20fill='%2316130F'/%3E%3Cpath%20fill='%23F5EFE2'%20d='M150%2088h212v300l-26%2020-27-20-26%2020-27-20-26%2020-27-20-26%2020-27-20-26%2020z'/%3E%3Cg%20stroke='%2316130F'%20stroke-width='26'%20stroke-linecap='round'%3E%3Cpath%20d='M190%20170h132M190%20236h132M190%20302h76'/%3E%3C/g%3E%3Cpath%20d='M190%20350h132'%20stroke='%23FF5C29'%20stroke-width='26'%20stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20fill='%2316130F'/%3E%3Cpath%20fill='%23F5EFE2'%20d='M160%20116h192v260l-24%2018-24-18-24%2018-24-18-24%2018-24-18-24%2018-24-18z'/%3E%3Cg%20stroke='%2316130F'%20stroke-width='26'%20stroke-linecap='round'%3E%3Cpath%20d='M200%20186h112M200%20246h112M200%20306h64'/%3E%3C/g%3E%3Cpath%20d='M200%20352h112'%20stroke='%23FF5C29'%20stroke-width='26'%20stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
