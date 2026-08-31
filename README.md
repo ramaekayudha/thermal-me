@@ -1,9 +1,9 @@
 ================================================================
   THERMAL ME — PEMBUAT RESI, STRUK & NOTA KUSTOM
-  Versi     : V1.9
+  Versi     : V1.10
   Jenis     : PWA (Progressive Web App) — 100% offline
   Alamat    : https://ramaekayudha.github.io/thermal-me/
-  Copyright : (c) 2025 · Design by Rama Eka Yudha
+  Copyright : (c) 2026 · Design by Rama Eka Yudha
   Kontak    : yudha.ramaeka@gmail.com
 ================================================================
 
@@ -26,15 +26,17 @@ tersimpan TERENKRIPSI (AES-256-GCM) di browser perangkat.
   Size)/MEGA 3x3, Tebal, Miring — pratinjau, dialog sistem, dan
   ESC/POS konsisten (Miring & Mega di printer tergantung
   dukungan ESC 4/5 dan GS !).
-- Field Data: 1/2/3 kolom (3 kolom kini berfungsi di 58mm),
-  perataan 4 arah, titik dua manual.
-- Nomor urut: format token kustom, bisa diedit, 1 baris
-  (justify) / 2 baris, perataan & gaya lengkap.
-- Tanggal, Tabel Item, Total, Tanda Tangan: gaya lengkap.
+- Field Data: 1/2/3 kolom — tampil di kertas DAN di form tab
+  Isi Resi; perataan 4 arah; titik dua manual.
+- Nomor Urut: perataan 4 arah berlaku di mode 1 Baris & 2 Baris;
+  1 Baris + Justify = label kiri, nomor kanan; format token
+  kustom, bisa diedit.
+- Tanggal: rata 4 arah; TANPA titik dua otomatis (ketik manual
+  di label bila ingin).
 - Logo resi: ukuran bebas 10-100%, rata 3 arah, dither
   Floyd-Steinberg di printer termal.
-- Logo resmi aplikasi (512x512, latar putih): tampil BULAT
-  (lingkaran) di kartu login & bilah atas, kedua mode.
+- Logo resmi aplikasi (512x512, latar putih): tampil BULAT di
+  kartu login & bilah atas, kedua mode; ikon PWA/favicon.
 - Templat siap pakai: Struk, Nota, Resi Kirim, Kosong;
   duplikat, ekspor/impor (opsional terenkripsi).
 - Riwayat terenkripsi: cari, cetak ulang, duplikat, batalkan,
@@ -104,11 +106,13 @@ port USB-nya. Printer non-termal gunakan jalur Printer Sistem.
          justify teks, nomor 1/2 baris, perataan tanggal
   V1.7 : logo resmi aplikasi (favicon, layar awal, bilah atas,
          ikon PWA)
-  V1.8 : field rata 4 arah & titik dua manual, 2-3 kolom (bug di
-         58mm), font UI sans 13px
-  V1.9 : FIX 3 kolom di 58mm (ambang & celah dikoreksi); gaya
-         lengkap (tebal/miring/2x/2x2/Mega 3x3/rata) di semua
-         blok bertulisan; logo bulat
+  V1.8 : field rata 4 arah & titik dua manual, 2-3 kolom, font
+         UI sans 13px
+  V1.9 : gaya lengkap (tebal/miring/2x/2x2/Mega 3x3/rata) di
+         semua blok bertulisan; logo bulat
+  V1.10: FIX 3 kolom (form Isi Resi kini berkolom, guard
+         diturunkan); tanggal tanpa titik dua otomatis;
+         perataan nomor urut berfungsi di mode 1 & 2 baris
 
 ================================================================
   Copyright (c) 2025 · Design by Rama Eka Yudha

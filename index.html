@@ -17,7 +17,7 @@
 <style>
 /* ============ TOKEN DESAIN ============ */
 /* Default: TERANG. class .gelap pada <html> = mode gelap.
-   V1.9: UI sans 13px; kertas pratinjau & cetak TETAP monospace
+   V1.10: UI sans 13px; kertas pratinjau & cetak TETAP monospace
    (cermin grid karakter printer 1:1 — jangan diganti). */
 :root{
   --bg:#F4F6F8; --bg2:#FFFFFF; --bg3:#EDF1F5; --inset:#F8FAFC;
@@ -100,13 +100,15 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 .seg-b{border:0;background:transparent;color:var(--tx2);font:inherit;font-size:11px;font-weight:600;padding:4px 9px;border-radius:6px;cursor:pointer}
 .seg-b.on{background:var(--bg3);color:var(--ac2)}
 .baris-f{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px;margin-bottom:6px}
+/* form field multi-kolom (tab Isi) */
+.grid-field{display:grid;gap:8px 10px}
 
 /* ============ LAYAR AUTH ============ */
 #layarAuth{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .auth-kartu{position:relative;width:min(430px,100%);background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:30px 28px;box-shadow:var(--sh1)}
 .tema-auth{position:absolute;top:14px;right:14px;z-index:1}
 .brand-glyph{display:flex;justify-content:center;margin-bottom:14px}
-/* logo putih 512x512 — V1.9: bingkai BULAT penuh (lingkaran) */
+/* logo putih 512x512 — bingkai BULAT (lingkaran) */
 .logo-auth{width:76px;height:76px;object-fit:cover;background:#fff;border:1px solid var(--bd);border-radius:50%;box-shadow:0 6px 18px rgba(23,32,48,.18)}
 .auth-brand{text-align:center;font-weight:800;letter-spacing:.22em;font-size:18px;margin:0}
 .auth-tag{text-align:center;color:var(--tx2);font-size:11.5px;margin:6px 0 22px;letter-spacing:.06em}
@@ -326,7 +328,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
   <header id="topbar">
     <div class="brand-wrap">
       <img src="./logo.png" alt="" class="logo-top" aria-hidden="true">
-      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.9</span>
+      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.10</span>
     </div>
     <nav id="navTabs">
       <button data-view="desain">Desain</button>
@@ -405,21 +407,20 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 'use strict';
 (() => {
 /* =====================================================================
-   THERMAL ME — v1.9
-   Perubahan dari v1.8:
-   - FIELD 3 KOLOM DIPERBAIKI: bug V1.8 — ambang lebar kolom (>=10)
-     membuat 58mm (kolom=9) diam-diam jatuh ke 1 kolom. Kini celah
-     antar kolom 1 spasi & ambang 8 → 58mm: 3 kolom × 10 karakter.
-   - GAYA TULISAN di SEMUA blok bertulisan: rata kiri/tengah/kanan/
-     justify, ukuran Kecil/Normal/2x Tinggi/2x Lebar/2x2 (Double Size)/
-     MEGA 3x3, Tebal, Miring — pada blok Teks, Field Data (per blok,
-     termasuk per kolom), Nomor Urut, Tanggal, Tabel Item (grid tabel
-     dihitung ulang sesuai ukuran), Total, dan Tanda Tangan.
-   - ESC/POS: Miring via ESC 4/5; Mega via GS ! 3x3 (0x22). Dua-duanya
-     standar Epson & umum di printer klone — printer tertentu bisa
-     mengabaikannya (pratinjau & dialog sistem selalu benar).
-   - Logo resmi kini tampil BULAT (lingkaran) di kedua mode.
-   - Migrasi: "Besar" lama (nomor) → 2x2; gaya lama tetap kompatibel.
+   THERMAL ME — v1.10
+   Perubahan dari v1.9:
+   - FIELD 3 KOLOM: guard lebar kolom diturunkan 8 → 4 (fallback hanya
+     untuk ukuran raksasa di kertas sempit), baris multi-kolom dipad
+     penuh, dan — penyebab utama keluhan — FORM tab "Isi Resi" kini
+     ikut menampilkan field dalam kolom (grid) sesuai tata letak.
+     Multi-kolom mengelompokkan field n-per-baris; perlu ≥ n field
+     agar terlihat di kertas.
+   - TANGGAL: titik dua (":") TIDAK lagi ditambahkan otomatis —
+     konsisten dengan Field Data (ketik manual di label bila ingin).
+   - NOMOR URUT: Perataan (kiri/tengah/kanan/justify) kini berlaku di
+     mode 1 Baris DAN 2 Baris (sebelumnya mode 1 baris terkunci gaya
+     justify). 1 Baris + Justify = label kiri, nomor kanan (gaya lama);
+     2 Baris + Justify = label rata kiri, nomor rata kanan.
    Aturan keamanan di seluruh file ini:
    1. String pengguna HANYA masuk lewat .textContent / .value / atribut
       aman — tidak pernah lewat innerHTML (kecuali SVG statis kode sendiri).
@@ -435,7 +436,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
       passphrase brankas).
 ===================================================================== */
 
-const APP_VERSI = 'V1.9';
+const APP_VERSI = 'V1.10';
 const ITER = 600000;
 const MM = 96 / 25.4;
 const DBNAME = 'thermalme';
@@ -724,8 +725,8 @@ function tokenisasi(f, seq, d){
    80mm: A≈47, B≈62. Grid ini menjamin pratinjau = dialog sistem =
    cetak langsung.
    Ukuran: S=kecil(fontB) · N=normal · H=2x tinggi (kolom tetap) ·
-   W=2x lebar (kolom setengah) · L=2x2 (Double Size, kolom setengah) ·
-   M=MEGA 3x3 (kolom sepertiga). Gaya b/u/i: tebal, garis bawah, miring. */
+   W=2x lebar (kolom setengah) · L=2x2 · M=MEGA 3x3 (kolom sepertiga).
+   Gaya b/u/i: tebal, garis bawah, miring. */
 function gridKertas(lebar, font){
   const fB = font === 'B';
   const dotW = fB ? 9 : 12;
@@ -807,9 +808,8 @@ function hitungTotal(items, blok, isi){
 function adaIsi(lines){
   return !!(lines && lines.some(l => l.logo ? !!l.src : String(l.t || '').trim()));
 }
-/* render satu sel field (satu field atau seluruh baris blok) —
-   menghasilkan baris teks selebar wChars persis, dengan perataan.
-   Tanpa titik dua otomatis (V1.8+). Justify: label kiri, isi kanan. */
+/* render satu sel field — baris teks selebar wChars persis, dengan
+   perataan. Tanpa titik dua otomatis. Justify: label kiri, isi kanan. */
 function renderFieldSel(list, wChars, rata){
   const lW = Math.min(Math.max(1, ...list.map(r => String(r.label ?? '').trim().length)), Math.max(1, wChars - 4));
   const out = [];
@@ -907,11 +907,12 @@ function renderDoc(tpl, draf, set, mode){
         const tebal = !!b.tebal, miring = !!b.miring;
         let pakaiKolom = false;
         if (nKol >= 2){
-          /* V1.9 FIX 3 KOLOM: celah 1 spasi + ambang 8 karakter.
-             58mm font A: 3 kolom × 10 karakter — kini benar-benar jalan. */
+          /* V1.10: guard diturunkan ke 4 — multi-kolom selalu aktif
+             kecuali ukuran raksasa di kertas sangat sempit.
+             58mm font A: 3 kolom × 10 karakter. */
           const celah = 1;
           const colW = Math.floor((wS - celah * (nKol - 1)) / nKol);
-          if (colW >= 8){
+          if (colW >= 4){
             pakaiKolom = true;
             for (let gi = 0; gi < baris.length; gi += nKol){
               const grup = baris.slice(gi, gi + nKol);
@@ -921,7 +922,7 @@ function renderDoc(tpl, draf, set, mode){
                 let t = '';
                 for (let c = 0; c < sel.length; c++)
                   t += (c > 0 ? ' ' : '') + (sel[c][i] || ' '.repeat(colW));
-                add(t, uk, tebal, false, miring);
+                add(padR(t, wS), uk, tebal, false, miring);
               }
             }
           }
@@ -941,22 +942,32 @@ function renderDoc(tpl, draf, set, mode){
         const wS = wFor(uk);
         const tebal = b.tebal === undefined ? true : !!b.tebal;
         const miring = !!b.miring;
-        const rata = ['kiri', 'tengah', 'kanan'].includes(b.rata) ? b.rata : 'tengah';
+        const rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'tengah';
         if (b.tata === 'satu' && lab.length + n.length + 1 <= wS){
-          add(padR(lab, Math.max(0, wS - n.length)) + n, uk, tebal, false, miring);
+          /* V1.10: mode 1 baris kini mengikuti Perataan.
+             Justify = label kiri, nomor kanan (gaya lama). */
+          if (rata === 'justify'){
+            add(padR(lab, Math.max(0, wS - n.length)) + n, uk, tebal, false, miring);
+          } else {
+            const gabung = (lab ? lab + ' ' : '') + n;
+            add(rata === 'tengah' ? ctr(gabung, wS) : rata === 'kanan' ? padL(gabung, wS) : padR(gabung, wS), uk, tebal, false, miring);
+          }
         } else {
-          if (lab) add(rata === 'tengah' ? ctr(lab, wS) : rata === 'kanan' ? padL(lab, wS) : padR(lab, wS), uk, tebal, false, miring);
-          add(rata === 'tengah' ? ctr(n, wS) : rata === 'kanan' ? padL(n, wS) : padR(n, wS), uk, tebal, false, miring);
+          /* 2 baris: justify = label kiri, nomor kanan. */
+          if (lab) add(rata === 'justify' ? padR(lab, wS) : rata === 'tengah' ? ctr(lab, wS) : rata === 'kanan' ? padL(lab, wS) : padR(lab, wS), uk, tebal, false, miring);
+          add(rata === 'justify' ? padL(n, wS) : rata === 'tengah' ? ctr(n, wS) : rata === 'kanan' ? padL(n, wS) : padR(n, wS), uk, tebal, false, miring);
         }
         break;
       }
       case 'tanggal': {
+        /* V1.10: tanpa titik dua otomatis — konsisten dengan Field
+           Data (ketik manual di label bila ingin, mis. "Tanggal:"). */
         const v = tokenisasi(b.format, 0, waktu);
         const rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
         let uk = ukuranOf(b);
         if (font === 'B' && uk === 'S') uk = 'N';
         const wS = wFor(uk);
-        const labelP = b.label ? b.label + ' :' : '';
+        const labelP = b.label ? String(b.label) : '';
         const tebal = !!b.tebal, miring = !!b.miring;
         if (rata === 'justify' && labelP.length + v.length <= wS){
           add(padR(labelP, Math.max(0, wS - v.length)) + v, uk, tebal, false, miring);
@@ -965,7 +976,7 @@ function renderDoc(tpl, draf, set, mode){
         } else if (rata === 'tengah'){
           for (const ln of bungkus(labelP ? labelP + ' ' + v : v, wS)) add(ctr(ln, wS), uk, tebal, false, miring);
         } else {
-          for (const ln of bungkus((b.label ? b.label + ' : ' : '') + v, wS)) add(ln, uk, tebal, false, miring);
+          for (const ln of bungkus((b.label ? b.label + ' ' : '') + v, wS)) add(ln, uk, tebal, false, miring);
         }
         break;
       }
@@ -1677,7 +1688,7 @@ function cetakPilih(lines, lebar, font){
     : baris('Printer Serial', 'Pilih port RS232/USB-serial (Chrome desktop)', 'SAMBUNG',
       async () => { if (await serSambung()) await cetakLangsung('ser', lines, lebar, font); }));
   kartu.append(wadah,
-    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, miring, ukuran 2x/Mega, dan logo persis seperti pratinjau (miring & Mega tergantung dukungan printer).'));
+    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, miring, ukuran 2x/2x2/Mega, dan logo — persis seperti pratinjau (miring & Mega tergantung dukungan printer).'));
   modalHasil(() => { tutupModal(); });
   bukaModal(kartu);
 }
@@ -1754,7 +1765,7 @@ function presetTemplat(jenis){
   if (jenis === 'nota') return { id: uid(), nama: 'Nota Pelanggan', kertas: { lebar: 80 }, font: 'A', seq: 1, blok: [
     B({ type: 'logo', gambar: null, lebar: 80, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'NOTA', rata: 'tengah', ukuran: 'L', tebal: true }),
-    B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', tata: 'satu', rata: 'tengah', ukuran: 'N', tebal: true }),
+    B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', tata: 'satu', rata: 'justify', ukuran: 'N', tebal: true }),
     B({ type: 'field', baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }], rata: 'kiri', kolom: 1 }),
     B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY}', rata: 'kiri' }),
     B({ type: 'garis', gaya: 'penuh' }),
@@ -1786,7 +1797,7 @@ function presetTemplat(jenis){
     B({ type: 'teks', isi: 'TOKO BERKAH JAYA', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'teks', isi: 'Jl. Merdeka No. 12, Bandung\n0812-3456-7890', rata: 'tengah', ukuran: 'S', tebal: false }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'nomor', label: 'No. Struk', format: 'S-{YYYY}{MM}-{seq:4}', tata: 'satu', rata: 'tengah', ukuran: 'N', tebal: true }),
+    B({ type: 'nomor', label: 'No. Struk', format: 'S-{YYYY}{MM}-{seq:4}', tata: 'satu', rata: 'justify', ukuran: 'N', tebal: true }),
     B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY} {HH}:{mm}', rata: 'kiri' }),
     B({ type: 'item', kolom: { qty: true, harga: true, subtot: true, satuan: false, diskon: false }, label: {}, header: true }),
     B({ type: 'total', diskonMode: 'tanpa', pajakMode: 'tanpa', pembulatan: 0, tampilBayar: true, label: { bayar: 'TUNAI' } }),
@@ -1856,11 +1867,12 @@ function migrasiTemplat(t){
       b.label = String(b.label ?? '').slice(0, 30);
       b.format = String(b.format ?? '').slice(0, 40);
       b.tata = ['dua', 'satu'].includes(b.tata) ? b.tata : 'dua';
-      /* konversi lama: "besar" → 2x2 */
       if (!UKURAN_V.includes(b.ukuran)) b.ukuran = b.besar ? 'L' : 'N';
       b.tebal = b.tebal === undefined ? true : !!b.tebal;
       b.miring = !!b.miring;
-      b.rata = ['kiri', 'tengah', 'kanan'].includes(b.rata) ? b.rata : 'tengah';
+      /* V1.10: rata nomor kini 4 arah; templat lama tanpa rata →
+         mode 1 baris dipertahankan gaya lama (justify). */
+      if (!['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata)) b.rata = (b.tata === 'satu') ? 'justify' : 'tengah';
     }
     if (b.type === 'tanggal'){
       b.label = String(b.label ?? '').slice(0, 30);
@@ -2096,7 +2108,7 @@ function badanBlok(tpl, b){
       badan.append(
         ta,
         kontrolGaya(tpl, b, { rata: RATA4, garisBawah: true }),
-        h('p', { class: 'bantuan' }, 'Justify: baris dipenuhi sampai tepi kanan; baris terakhir paragraf tetap kiri. 2x2 = Double Size (tinggi+lebar). Mega = 3x3. Miring & Mega di printer tergantung dukungan (pratinjau selalu benar).'));
+        h('p', { class: 'bantuan' }, 'Justify: baris dipenuhi sampai tepi kanan; baris terakhir paragraf tetap kiri. 2x2 = Double Size. Mega = 3x3. Miring & Mega di printer tergantung dukungan (pratinjau selalu benar).'));
       break;
     }
     case 'logo': {
@@ -2158,7 +2170,7 @@ function badanBlok(tpl, b){
         L('Gaya tulisan', kontrolGaya(tpl, b, {})),
         wadah,
         h('button', { class: 'tambah-item', onclick: () => { b.baris.push({ label: 'Label', nilai: '' }); ubahTemplat(tpl); renderDesain(); } }, '+ Tambah baris'),
-        h('p', { class: 'bantuan' }, 'Titik dua tidak otomatis — ketik di label (mis. "Nama:"). Justify: label kiri, isi kanan. Multi-kolom: beberapa field sebaris (58mm kini mendukung 3 kolom × 10 karakter); bila kolom terlalu sempit (mis. ukuran besar) otomatis 1 kolom. Perataan berlaku per kolom.'));
+        h('p', { class: 'bantuan' }, 'Titik dua tidak otomatis — ketik di label (mis. "Nama:"). Multi-kolom menyusun field n-per-baris, terlihat di FORM tab Isi Resi dan di kertas (butuh minimal n field). Justify: label kiri, isi kanan. Bila ukuran Mega membuat kolom terlalu sempit, otomatis 1 kolom.'));
       break;
     }
     case 'item': {
@@ -2212,11 +2224,12 @@ function badanBlok(tpl, b){
         h('div', {}, h('span', { class: 'lbl' }, 'Format'), inpF),
         h('p', { class: 'bantuan' }, 'Token: {YYYY} {YY} {MM} {DD} {HH} {mm} {seq:4}. Contoh: TM-{YYYY}{MM}-{seq:4} → ' + tokenisasi(b.format || '', tpl.seq || 1, new Date())),
         h('div', {}, h('span', { class: 'lbl' }, 'Tata letak'),
-          seg([{ v: 'dua', l: '2 Baris' }, { v: 'satu', l: '1 Baris (justify)' }], b.tata || 'dua', v => { b.tata = v; ubahTemplat(tpl); })),
-        h('div', {}, h('span', { class: 'lbl' }, 'Perataan (mode 2 baris)'), seg(RATA3, ['kiri', 'tengah', 'kanan'].includes(b.rata) ? b.rata : 'tengah', v => { b.rata = v; ubahTemplat(tpl); })),
+          seg([{ v: 'dua', l: '2 Baris' }, { v: 'satu', l: '1 Baris' }], b.tata || 'dua', v => { b.tata = v; ubahTemplat(tpl); })),
+        h('div', {}, h('span', { class: 'lbl' }, 'Perataan'),
+          seg(RATA4, ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'tengah', v => { b.rata = v; ubahTemplat(tpl); })),
         h('div', {}, h('span', { class: 'lbl' }, 'Nomor urut berikutnya'), inpSeq),
         L('Gaya tulisan', kontrolGaya(tpl, b, {})),
-        h('p', { class: 'bantuan' }, '1 Baris (justify): label nempel kiri, nomor nempel kanan — bila tak muat otomatis 2 baris. Nomor urut naik +1 tiap resi disimpan; bisa diedit manual (koreksi salah cetak).'));
+        h('p', { class: 'bantuan' }, 'V1.10: Perataan berlaku di kedua mode. 1 Baris + Justify = label kiri, nomor kanan; 1 Baris + Tengah/Kiri/Kanan = label & nomor sebaris mengikuti perataan. 2 Baris + Justify = label rata kiri, nomor rata kanan. Bila 1 baris tak muat, otomatis 2 baris. Nomor urut naik +1 tiap resi disimpan; bisa diedit manual.'));
       break;
     }
     case 'tanggal': {
@@ -2229,7 +2242,7 @@ function badanBlok(tpl, b){
         h('div', {}, h('span', { class: 'lbl' }, 'Format'), inpF),
         h('div', {}, h('span', { class: 'lbl' }, 'Perataan'), seg(RATA4, ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri', v => { b.rata = v; ubahTemplat(tpl); })),
         L('Gaya tulisan', kontrolGaya(tpl, b, {})),
-        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date()) + '. Justify: label kiri, tanggal kanan (jatuh ke kiri bila tidak muat).'));
+        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date()) + '. Titik dua tidak otomatis — ketik di label (mis. "Tanggal:") bila ingin. Justify: label kiri, tanggal kanan (jatuh ke kiri bila tidak muat).'));
       break;
     }
     case 'garis':
@@ -2360,12 +2373,18 @@ function renderIsi(){
   for (const b of tpl.blok){
     if (b.type === 'field'){
       const nilai = draf.field[b.id] || (draf.field[b.id] = (b.baris || []).map(r => r.nilai || ''));
-      const wadah = h('div', { class: 'sek' }, h('p', { class: 'sek-t' }, 'DATA'));
+      const nKol = clampInt(b.kolom || 1, 1, 3);
+      /* V1.10: form kini menampilkan kolom sesuai tata letak blok. */
+      const wadah = h('div', { class: 'sek' }, h('p', { class: 'sek-t' }, 'DATA' + (nKol > 1 ? ' · ' + nKol + ' KOLOM' : '')));
+      const wadahGrid = nKol > 1
+        ? h('div', { class: 'grid-field', style: { gridTemplateColumns: 'repeat(' + nKol + ', minmax(88px, 1fr))' } })
+        : h('div', {});
       (b.baris || []).forEach((r, i) => {
         const inp = h('input', { class: 'inp', maxlength: 200, value: nilai[i] || '', placeholder: r.label });
         inp.addEventListener('input', e => { nilai[i] = e.target.value; tandaiDraf(); mintaPratinjau(); });
-        wadah.append(h('div', { style: { marginBottom: '8px' } }, h('span', { class: 'lbl' }, r.label || 'Label'), inp));
+        wadahGrid.append(h('div', { style: nKol === 1 ? { marginBottom: '8px' } : null }, h('span', { class: 'lbl' }, r.label || 'Label'), inp));
       });
+      wadah.append(wadahGrid);
       if ((b.baris || []).length) root.append(wadah);
     }
     else if (b.type === 'item'){
