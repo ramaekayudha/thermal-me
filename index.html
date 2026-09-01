@@ -16,9 +16,6 @@
 <style id="printStyle"></style>
 <style>
 /* ============ TOKEN DESAIN ============ */
-/* Default: TERANG. class .gelap pada <html> = mode gelap.
-   V1.11: UI sans 13px; kertas pratinjau & cetak TETAP monospace
-   (cermin grid karakter printer 1:1 — jangan diganti). */
 :root{
   --bg:#F4F6F8; --bg2:#FFFFFF; --bg3:#EDF1F5; --inset:#F8FAFC;
   --bd:#E4E9F0; --bd2:#CBD4DF;
@@ -99,16 +96,17 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 .seg{display:inline-flex;flex-wrap:wrap;background:var(--inset);border:1px solid var(--bd);border-radius:9px;padding:3px;gap:2px}
 .seg-b{border:0;background:transparent;color:var(--tx2);font:inherit;font-size:11px;font-weight:600;padding:4px 9px;border-radius:6px;cursor:pointer}
 .seg-b.on{background:var(--bg3);color:var(--ac2)}
-.baris-f{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px;margin-bottom:6px}
-/* form field multi-kolom (tab Isi) */
+.baris-f{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px;margin-bottom:0}
 .grid-field{display:grid;gap:8px 10px}
+/* kartu field per-baris (gaya sendiri per field) */
+.field-card{border:1px solid var(--bd);border-radius:9px;padding:10px;margin-bottom:8px;background:var(--inset);display:grid;gap:8px}
+.field-card .baris-f .inp{padding:7px 9px}
 
 /* ============ LAYAR AUTH ============ */
 #layarAuth{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .auth-kartu{position:relative;width:min(430px,100%);background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:30px 28px;box-shadow:var(--sh1)}
 .tema-auth{position:absolute;top:14px;right:14px;z-index:1}
 .brand-glyph{display:flex;justify-content:center;margin-bottom:14px}
-/* logo putih 512x512 — bingkai BULAT (lingkaran) */
 .logo-auth{width:76px;height:76px;object-fit:cover;background:#fff;border:1px solid var(--bd);border-radius:50%;box-shadow:0 6px 18px rgba(23,32,48,.18)}
 .auth-brand{text-align:center;font-weight:800;letter-spacing:.22em;font-size:18px;margin:0}
 .auth-tag{text-align:center;color:var(--tx2);font-size:11.5px;margin:6px 0 22px;letter-spacing:.06em}
@@ -146,7 +144,6 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 .pv-zoom span{font-size:10px;color:var(--tx3);min-width:38px;text-align:center}
 #pvScroll{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:18px 12px 60px}
 
-/* ---- footer aplikasi ---- */
 #appFooter{position:sticky;bottom:0;z-index:5;flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 16px;background:var(--bg);border-top:1px solid var(--bd);color:var(--tx3);font-size:10px;letter-spacing:.09em}
 .foot-status{font-size:9.5px;letter-spacing:.05em;white-space:nowrap}
 
@@ -156,6 +153,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 .paper{background:var(--paper);color:var(--ink);margin:-8px 0 0;padding:13px 8px 0;border-radius:0 0 2px 2px;box-shadow:var(--sh3);position:relative}
 .paper-body{font-family:var(--mono);line-height:1.25;overflow:hidden}
 .ln{white-space:pre;min-height:1.25em}
+.ln span{white-space:pre}
 .sS{font-size:.75em}.sL{font-size:2em}.sM{font-size:3em}.sB{font-weight:700}.sU{text-decoration:underline}.sI{font-style:italic}
 .lnHBox{height:2.5em}
 .lnHIn{display:inline-block;transform:scaleY(2);transform-origin:0 0}
@@ -187,9 +185,10 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 .cek-baris .cek{margin:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .bantuan{font-size:10.5px;color:var(--tx3);line-height:1.5}
-/* mini pratinjau tata letak field (V1.11) — cermin kertas */
-.mini-pv{background:var(--paper);color:var(--ink);border:1px solid var(--bd2);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.4;overflow:auto;max-height:190px}
-.mini-pv-line{white-space:pre}
+/* mini pratinjau tata letak field — cermin kertas, per-field */
+.mini-pv{background:var(--paper);color:var(--ink);border:1px solid var(--bd2);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.4;overflow:auto;max-height:220px}
+.mini-pv-line{white-space:pre;min-height:1.4em}
+.mini-pv-line span{white-space:pre}
 .mini-pv-cap{font-size:10px;color:var(--tx3);margin-top:5px;line-height:1.5}
 .mini-pv-kosong{color:var(--tx3)}
 
@@ -272,6 +271,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 /* ============ CETAK (TETAP monospace) ============ */
 #printRoot{display:none;font-family:var(--mono);color:#000;background:#fff;line-height:1.25}
 .pln{white-space:pre;overflow:hidden}
+.pln span{white-space:pre}
 .pS{font-size:.75em}.pL{font-size:2em}.pM{font-size:3em}.pB{font-weight:700}.pU{text-decoration:underline}.pI{font-style:italic}
 .pHBox{height:2.5em}
 .pHIn{display:inline-block;transform:scaleY(2);transform-origin:0 0}
@@ -335,7 +335,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
   <header id="topbar">
     <div class="brand-wrap">
       <img src="./logo.png" alt="" class="logo-top" aria-hidden="true">
-      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.11</span>
+      <span class="brand">THERMAL ME</span><span class="versi" id="versiApp">V1.12</span>
     </div>
     <nav id="navTabs">
       <button data-view="desain">Desain</button>
@@ -399,7 +399,6 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
   <div id="ovScroll"></div>
 </div>
 
-<!-- Area cetak (hanya tampil saat window.print) -->
 <div id="printRoot" aria-hidden="true"></div>
 
 <div id="modalRoot" hidden>
@@ -414,16 +413,23 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
 'use strict';
 (() => {
 /* =====================================================================
-   THERMAL ME — v1.11
-   Perubahan dari v1.10:
-   - FIELD DATA: kotak "PRATINJAU TATA LETAK" langsung di editor blok —
-     menampilkan hasil PERSIS di kertas (lewat jalur render yang sama),
-     ikut berubah seketika saat Tata Letak / Perataan / Ukuran / isi
-     field berubah, plus peringatan otomatis bila jumlah field kurang
-     dari jumlah kolom. Tujuan: menghilangkan kebingungan "kolom".
-   - SPASI: langkah 0,5 (setengah baris). Pratinjau & dialog sistem
-     memakai baris setengah-tinggi; ESC/POS mendekati dengan
-     ESC 3 18 (spasi 18/216 inci) + LF + ESC 2 (reset).
+   THERMAL ME — v1.12
+   Perubahan dari v1.11:
+   - FIELD DATA: jumlah kolom SELALU mengikuti pilihan (1/2/3 field
+     per baris) — fallback "kolom sempit → 1 kolom" DIHAPUR. Lebar
+     tiap sel dihitung dari faktor lebar ukuran field itu sendiri
+     (Normal=1 · 2xLebar/2x2=2 · Mega=3 · Kecil=0,75) sehingga total
+     tetap pas lebar kertas.
+   - GAYA PER FIELD (bukan global): setiap field punya sendiri
+     rata/ukuran/tebal/miring. Contoh: field1 kiri, field2 tengah,
+     field3 kanan — dalam satu baris multi-kolom sekalipun. Baris
+     multi-kolom = baris SEGMENT (gaya berbeda dalam satu baris):
+     didukung pratinjau (span), dialog cetak (span), dan ESC/POS
+     (ganti ESC !/GS !/ESC 4 di tengah baris sebelum LF).
+   - Migrasi: gaya global lama blok diwariskan ke tiap field —
+     tampilan templat lama tidak berubah.
+   - FIX: Mega sejak V1.9 mengirim GS ! 0x22 (yang itu 2x2) —
+     diperbaiki menjadi GS ! 0x33 (3x3 sesuai spesifikasi).
    Aturan keamanan di seluruh file ini:
    1. String pengguna HANYA masuk lewat .textContent / .value / atribut
       aman — tidak pernah lewat innerHTML (kecuali SVG statis kode sendiri).
@@ -439,7 +445,7 @@ body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 var(--sans);-we
       passphrase brankas).
 ===================================================================== */
 
-const APP_VERSI = 'V1.11';
+const APP_VERSI = 'V1.12';
 const ITER = 600000;
 const MM = 96 / 25.4;
 const DBNAME = 'thermalme';
@@ -469,7 +475,6 @@ function h(tag, attrs, ...anak){
 }
 const clampInt = (v, a, b) => { const n = Math.round(Number(v) || 0); return Math.max(a, Math.min(b, n)); };
 const num = v => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
-/* pembulatan ke kelipatan 0,5 (untuk spasi) */
 const halfStep = v => { let n = Math.round(num(v) * 2) / 2; return Math.max(0, Math.min(20, n)); };
 function uid(){
   if (crypto.randomUUID) return crypto.randomUUID();
@@ -725,13 +730,15 @@ function tokenisasi(f, seq, d){
   });
 }
 
-/* ---------- mesin render: kertas → baris (teks / logo) ---------- */
+/* ---------- mesin render: kertas → baris (teks / logo / segmen) ---------- */
 /* Font A = 12 dot/karakter, Font B = 9 dot. 58mm: A≈32 kolom, B≈42.
-   80mm: A≈47, B≈62. Grid ini menjamin pratinjau = dialog sistem =
-   cetak langsung.
    Ukuran: S=kecil(fontB) · N=normal · H=2x tinggi (kolom tetap) ·
    W=2x lebar (kolom setengah) · L=2x2 · M=MEGA 3x3 (kolom sepertiga).
-   Gaya b/u/i: tebal, garis bawah, miring. half: baris setengah-tinggi. */
+   Faktor lebar (wf) dipakai aritmatika sel multi-kolom; faktor tinggi
+   (hf) untuk tinggi baris segmen. */
+const wForOf = (W, s) => s === 'S' ? Math.floor(W * 4 / 3) : s === 'M' ? Math.max(3, Math.floor(W / 3)) : (s === 'L' || s === 'W') ? Math.max(4, Math.floor(W / 2)) : W;
+const wfOf = s => s === 'S' ? 0.75 : (s === 'W' || s === 'L') ? 2 : s === 'M' ? 3 : 1;
+const hfOf = s => s === 'S' ? 0.75 : (s === 'H' || s === 'L') ? 2 : s === 'M' ? 3 : 1;
 function gridKertas(lebar, font){
   const fB = font === 'B';
   const dotW = fB ? 9 : 12;
@@ -792,7 +799,11 @@ function bungkus(teks, wPertama, wSisa, indent){
 }
 function nilaiField(b, draf){
   const arr = draf && draf.field ? draf.field[b.id] : null;
-  return (b.baris || []).map((r, i) => ({ label: r.label, nilai: (arr && arr[i] != null) ? arr[i] : r.nilai }));
+  return (b.baris || []).map((r, i) => ({
+    label: r.label,
+    nilai: (arr && arr[i] != null) ? arr[i] : r.nilai,
+    rata: r.rata, ukuran: r.ukuran, tebal: r.tebal, miring: r.miring
+  }));
 }
 function hitungTotal(items, blok, isi){
   const sub = items.reduce((a, i) => a + num(i.qty) * num(i.harga), 0);
@@ -811,11 +822,11 @@ function hitungTotal(items, blok, isi){
   return { sub, dItem, d, p, bulat, total, bayar, kembali: bayar != null ? Math.round((bayar - total) * 100) / 100 : null };
 }
 function adaIsi(lines){
-  return !!(lines && lines.some(l => l.logo ? !!l.src : String(l.t || '').trim()));
+  return !!(lines && lines.some(l =>
+    l.logo ? !!l.src
+    : l.segs ? l.segs.some(sg => String(sg.t || '').trim())
+    : String(l.t || '').trim()));
 }
-/* lebar efektif kolom karakter menurut ukuran (dipakai renderDoc &
-   mini pratinjau field — satu sumber kebenaran) */
-const wForOf = (W, s) => s === 'S' ? Math.floor(W * 4 / 3) : s === 'M' ? Math.max(3, Math.floor(W / 3)) : (s === 'L' || s === 'W') ? Math.max(4, Math.floor(W / 2)) : W;
 /* render satu sel field — baris teks selebar wChars persis, dengan
    perataan. Tanpa titik dua otomatis. Justify: label kiri, isi kanan. */
 function renderFieldSel(list, wChars, rata){
@@ -848,7 +859,6 @@ function renderFieldSel(list, wChars, rata){
       for (const ln of bungkus(lab + ' ' + val, wChars)) out.push(padL(ln, wChars));
       continue;
     }
-    /* kiri (dan justify yang tidak muat satu baris) */
     if (lab.length > lW){
       for (const ln of bungkus(lab, wChars)) out.push(ln);
       for (const ln of bungkus(val, wChars)) out.push(ln);
@@ -861,33 +871,41 @@ function renderFieldSel(list, wChars, rata){
   }
   return out.map(l => padR(l, wChars));
 }
-/* V1.11: tata letak field dipisah jadi fungsi bersama — dipakai
-   renderDoc (kertas/cetak) DAN mini pratinjau di editor blok,
-   sehingga keduanya dijamin identik. "Kolom" = jumlah FIELD per
-   baris. */
-function layoutFieldLines(b, baris, wS){
-  const rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
+/* V1.12: tata letak FIELD dengan GAYA PER FIELD.
+   - nKol SELALU dihormati (1/2/3 field per baris), tanpa fallback.
+   - 1 Kolom: tiap field → baris flat dengan gaya field itu.
+   - 2/3 Kolom: tiap baris = baris SEGMENT: tiap sel berisi teks field
+     dengan gayanya sendiri (ukuran menentukan lebar sel via wfOf),
+     sehingga satu baris kertas bisa memuat gaya berbeda-beda. */
+function fieldBlockLines(b, baris, W, fontBase){
   const nKol = clampInt(b.kolom || 1, 1, 3);
-  if (nKol >= 2){
-    const celah = 1;
-    const colW = Math.floor((wS - celah * (nKol - 1)) / nKol);
-    if (colW >= 4){
-      const out = [];
-      for (let gi = 0; gi < baris.length; gi += nKol){
-        const grup = baris.slice(gi, gi + nKol);
-        const sel = grup.map(r => renderFieldSel([r], colW, rata));
-        const tinggi = Math.max(0, ...sel.map(a => a.length));
-        for (let i = 0; i < tinggi; i++){
-          let t = '';
-          for (let c = 0; c < sel.length; c++)
-            t += (c > 0 ? ' ' : '') + (sel[c][i] || ' '.repeat(colW));
-          out.push(padR(t, wS));
-        }
-      }
-      return { lines: out, multi: true };
+  const ukF = r => { let uk = UKURAN_V.includes(r.ukuran) ? r.ukuran : 'N'; if (fontBase === 'B' && uk === 'S') uk = 'N'; return uk; };
+  const rataF = r => ['kiri', 'tengah', 'kanan', 'justify'].includes(r.rata) ? r.rata : 'kiri';
+  const out = [];
+  if (nKol === 1){
+    for (const r of baris){
+      const uk = ukF(r);
+      const wS = wForOf(W, uk);
+      const sel = renderFieldSel([{ label: r.label, nilai: r.nilai }], wS, rataF(r));
+      for (const t of sel) out.push({ t, s: uk, b: !!r.tebal, u: false, i: !!r.miring });
+    }
+    return out;
+  }
+  const share = W / nKol;
+  for (let gi = 0; gi < baris.length; gi += nKol){
+    const grup = baris.slice(gi, gi + nKol);
+    const cells = grup.map(r => {
+      const uk = ukF(r);
+      const cw = Math.max(2, Math.floor(share / wfOf(uk)));
+      return { uk, cw, b: !!r.tebal, i: !!r.miring, lines: renderFieldSel([{ label: r.label, nilai: r.nilai }], cw, rataF(r)) };
+    });
+    const tinggi = Math.max(0, ...cells.map(c => c.lines.length));
+    for (let j = 0; j < tinggi; j++){
+      const segs = cells.map(c => ({ t: c.lines[j] != null ? c.lines[j] : ' '.repeat(c.cw), s: c.uk, b: c.b, u: false, i: c.i }));
+      out.push({ segs, h: Math.max(...segs.map(sg => hfOf(sg.s))) });
     }
   }
-  return { lines: renderFieldSel(baris, wS, rata), multi: false };
+  return out;
 }
 function renderDoc(tpl, draf, set, mode){
   const font = tpl.font === 'B' ? 'B' : 'A';
@@ -935,12 +953,7 @@ function renderDoc(tpl, draf, set, mode){
       case 'field': {
         const baris = nilaiField(b, draf);
         if (!baris.length) break;
-        let uk = ukuranOf(b);
-        if (font === 'B' && uk === 'S') uk = 'N';
-        const wS = wFor(uk);
-        const tebal = !!b.tebal, miring = !!b.miring;
-        const fl = layoutFieldLines(b, baris, wS);
-        for (const t of fl.lines) add(t, uk, tebal, false, miring);
+        for (const ln of fieldBlockLines(b, baris, W, font)) lines.push(ln);
         break;
       }
       case 'nomor': {
@@ -1058,8 +1071,6 @@ function renderDoc(tpl, draf, set, mode){
         break;
       }
       case 'spasi': {
-        /* V1.11: langkah 0,5 — bagian pecahan menjadi baris
-           setengah-tinggi (half). */
         const n = halfStep(b.baris);
         const full = Math.floor(n);
         const half = (n - full) >= 0.5;
@@ -1137,12 +1148,13 @@ function renderPreview(){
   body.style.fontSize = fs + 'px';
   paper.style.width = (Math.ceil(g.chars * 0.6 * fs) + 16) + 'px';
   $('#printerSlot').style.width = Math.max(140, Math.min(280, Math.ceil(g.chars * 0.6 * fs) + 36)) + 'px';
+  const pwPx = g.chars * 0.6 * fs;
   for (const l of lines){
     if (l.logo){
       if (l.src){
         const pos = posLogo(l.pos);
         const img = h('img', { class: 'lnLogo', src: l.src, alt: 'logo' });
-        img.style.width = Math.max(8, Math.round(pwPxOf(g, fs) * clampInt(l.wPct || 100, 10, 100) / 100)) + 'px';
+        img.style.width = Math.max(8, Math.round(pwPx * clampInt(l.wPct || 100, 10, 100) / 100)) + 'px';
         img.style.margin = pos === 'kiri' ? '3px auto 3px 0' : pos === 'kanan' ? '3px 0 3px auto' : '3px auto';
         body.append(img);
       }
@@ -1150,6 +1162,16 @@ function renderPreview(){
     }
     if (l.half){
       body.append(h('div', { class: 'ln lnHalf' }));
+      continue;
+    }
+    if (l.segs){
+      const el = h('div', { class: 'ln' });
+      for (const sg of l.segs){
+        const sp = h('span', { class: (sg.s === 'S' ? 'sS' : sg.s === 'L' ? 'sL' : sg.s === 'M' ? 'sM' : '') + (sg.b ? ' sB' : '') + (sg.u ? ' sU' : '') + (sg.i ? ' sI' : '') });
+        sp.textContent = sg.t === '' ? '\u00A0' : sg.t;
+        el.append(sp);
+      }
+      body.append(el);
       continue;
     }
     const teks = l.t === '' ? '\u00A0' : l.t;
@@ -1178,7 +1200,6 @@ function renderPreview(){
   const nl = document.getElementById('noLive');
   if (nl) nl.textContent = nomor || '—';
 }
-const pwPxOf = (g, fs) => g.chars * 0.6 * fs;
 
 /* ---------- animasi kertas keluar ---------- */
 function animasiFeed(){
@@ -1210,6 +1231,16 @@ function halamanCetak(lines, g){
       d.append(h('div', { class: 'pln plnHalf' }));
       continue;
     }
+    if (l.segs){
+      const el = h('div', { class: 'pln' });
+      for (const sg of l.segs){
+        const sp = h('span', { class: (sg.s === 'S' ? 'pS' : sg.s === 'L' ? 'pL' : sg.s === 'M' ? 'pM' : '') + (sg.b ? ' pB' : '') + (sg.u ? ' pU' : '') + (sg.i ? ' pI' : '') });
+        sp.textContent = sg.t === '' ? '\u00A0' : sg.t;
+        el.append(sp);
+      }
+      d.append(el);
+      continue;
+    }
     if (l.s === 'H' || l.s === 'W'){
       const el = h('div', { class: 'pln' + (l.s === 'H' ? ' pHBox' : '') + (l.b ? ' pB' : '') + (l.u ? ' pU' : '') + (l.i ? ' pI' : '') });
       const inner = h('span', { class: l.s === 'H' ? 'pHIn' : 'pWIn' });
@@ -1234,6 +1265,7 @@ async function cetakDialog(lines, lebar, font){
     const pwMM = g.adv * g.chars;
     const tinggiBaris = l => l.logo
       ? pwMM * clampInt(l.wPct || 100, 10, 100) / 100 * (num(l.rasio) || 0.35) + 2
+      : l.segs ? g.fontMM * (num(l.h) || 1) * 1.25
       : l.half ? g.fontMM * 0.625
       : g.fontMM * (l.s === 'S' ? .75 : (l.s === 'L' || l.s === 'H') ? 2 : l.s === 'M' ? 3 : 1) * 1.25;
     if (lebar >= 120){
@@ -1360,14 +1392,14 @@ async function rasterLogo(src, pW, pct, pos){
   return { bytes: out, wBytes, h: hgt };
 }
 
-/* ---- penyusun byte ESC/POS (async karena raster logo) ----
+/* ---- penyusun byte ESC/POS ----
    ESC ! bit: 0x01 fontB · 0x08 tebal · 0x10 tinggi 2x · 0x20 lebar 2x ·
    0x30 keduanya (2x2) · 0x80 garis bawah.
-   MEGA (3x3): GS ! 0x22 — dikirim SETELAH ESC ! agar menang.
+   MEGA 3x3: GS ! 0x33 (FIX V1.12 — 0x22 lama ternyata 2x2).
    Miring: ESC 4 (on) / ESC 5 (off).
-   Baris setengah (spasi 0,5): ESC 3 18 (spasi 18/216") + LF + ESC 2
-   (reset ke default 1/6") — aproksimasi setengah baris terbaik yang
-   dimengerti printer.                                          */
+   Baris SEGMENT (gaya per field): mode diganti per segmen di tengah
+   baris, satu LF di akhir; ditutup ESC @ agar pelacak mode aman.
+   Baris setengah: ESC 3 18 + LF + ESC 2.                          */
 async function escposBuat(lines, cetak, fontBase, g){
   const b = [0x1B, 0x40];
   let modeAkhir = -1;
@@ -1389,6 +1421,27 @@ async function escposBuat(lines, cetak, fontBase, g){
       b.push(0x1B, 0x33, 18, 0x0A, 0x1B, 0x32);
       continue;
     }
+    if (l.segs){
+      let itOn = false;
+      for (const sg of l.segs){
+        const mega = sg.s === 'M';
+        let m = 0x00;
+        if (fontBase === 'B' || sg.s === 'S') m |= 0x01;
+        if (sg.s === 'H') m |= 0x10;
+        else if (sg.s === 'W') m |= 0x20;
+        else if (sg.s === 'L') m |= 0x30;
+        if (sg.b) m |= 0x08;
+        if (sg.u) m |= 0x80;
+        b.push(0x1B, 0x21, m);
+        if (mega) b.push(0x1D, 0x21, 0x33);
+        if (!!sg.i !== itOn){ b.push(0x1B, sg.i ? 0x34 : 0x35); itOn = !!sg.i; }
+        for (const x of encodeESCPOS(sg.t)) b.push(x);
+      }
+      if (itOn) b.push(0x1B, 0x35);
+      b.push(0x0A, 0x1B, 0x40);
+      modeAkhir = -1; megaAkhir = false; italicAkhir = false;
+      continue;
+    }
     const mega = l.s === 'M';
     let m = 0x00;
     if (fontBase === 'B' || l.s === 'S') m |= 0x01;
@@ -1400,7 +1453,7 @@ async function escposBuat(lines, cetak, fontBase, g){
     if (m !== modeAkhir || mega !== megaAkhir){
       b.push(0x1B, 0x21, m);
       modeAkhir = m;
-      if (mega){ b.push(0x1D, 0x21, 0x22); }
+      if (mega){ b.push(0x1D, 0x21, 0x33); }
       megaAkhir = mega;
     }
     if (!!l.i !== italicAkhir){
@@ -1715,7 +1768,7 @@ function cetakPilih(lines, lebar, font){
     : baris('Printer Serial', 'Pilih port RS232/USB-serial (Chrome desktop)', 'SAMBUNG',
       async () => { if (await serSambung()) await cetakLangsung('ser', lines, lebar, font); }));
   kartu.append(wadah,
-    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, miring, ukuran 2x/2x2/Mega, dan logo — persis seperti pratinjau (miring & Mega tergantung dukungan printer).'));
+    h('p', { class: 'bantuan' }, 'Tujuan cetak default dapat diatur di Setelan → Printer. Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font, tebal, garis bawah, miring, ukuran 2x/2x2/Mega (kini 3x3 asli), spasi 0,5, dan logo — persis seperti pratinjau (miring & Mega tergantung dukungan printer).'));
   modalHasil(() => { tutupModal(); });
   bukaModal(kartu);
 }
@@ -1727,6 +1780,7 @@ function barisUji(lebar, font){
   const WL = Math.max(4, Math.floor(W / 2));
   const WM = Math.max(3, Math.floor(W / 3));
   const WS = font === 'B' ? W : Math.floor(W * 4 / 3);
+  const w3 = Math.floor(W / 3);
   const set = S.setelan;
   const waktu = tokenisasi('{DD}/{MM}/{YYYY} {HH}:{mm}', 0, new Date());
   return [
@@ -1738,11 +1792,17 @@ function barisUji(lebar, font){
     { t: '-'.repeat(W) },
     { t: 'Font ' + (font === 'B' ? 'B rapat' : 'A standar') + ' + garis bawah', s: 'N', u: true },
     { t: 'Tebal + miring (ESC 4/5)', s: 'N', b: true, i: true },
+    { t: '3 FIELD 1 BARIS, GAYA BEDA:' },
+    { segs: [
+        { t: padR('kiri', w3), s: 'N' },
+        { t: ctr('tengah', w3), s: 'N', b: true },
+        { t: padL('kanan', w3), s: 'N', i: true }
+      ], h: 1 },
     { t: 'SPASI 0,5 DI BAWAH INI:' },
     { t: '', half: true },
     { t: ctr('TINGGI 2X', W), s: 'H' },
     { t: ctr('LEBAR 2X', WL), s: 'W' },
-    { t: ctr('MEGA 3X (GS !)', WM), s: 'M' },
+    { t: ctr('MEGA 3X (GS ! 33)', WM), s: 'M' },
     { t: ctr(W + ' kolom · ' + lebar + 'mm', WS), s: 'S' },
     { t: ctr(waktu, WS), s: 'S' }
   ];
@@ -1774,11 +1834,12 @@ const NAMA_BLOK = { teks: 'Teks', field: 'Field Data', item: 'Tabel Item', total
 const UKURAN_V = ['S', 'N', 'H', 'W', 'L', 'M'];
 const RATA4 = [{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }, { v: 'justify', l: 'Justify' }];
 const RATA3 = [{ v: 'kiri', l: 'Kiri' }, { v: 'tengah', l: 'Tengah' }, { v: 'kanan', l: 'Kanan' }];
+const UKURAN_SEG = [{ v: 'S', l: 'Kecil' }, { v: 'N', l: 'Normal' }, { v: 'H', l: '2x Tinggi' }, { v: 'W', l: '2x Lebar' }, { v: 'L', l: '2x2' }, { v: 'M', l: 'Mega 3x3' }];
 function blokBaru(type){
   const id = uid();
   switch (type){
     case 'teks':    return { id, type, isi: 'Teks baru', rata: 'kiri', ukuran: 'N', tebal: false, miring: false, garisBawah: false };
-    case 'field':   return { id, type, baris: [{ label: 'Label', nilai: '' }], rata: 'kiri', kolom: 1, ukuran: 'N', tebal: false, miring: false };
+    case 'field':   return { id, type, kolom: 1, baris: [{ label: 'Label', nilai: '', rata: 'kiri', ukuran: 'N', tebal: false, miring: false }] };
     case 'item':    return { id, type, kolom: { qty: true, harga: true, subtot: true, satuan: false, diskon: false }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true, ukuran: 'N', tebal: false, miring: false };
     case 'total':   return { id, type, diskonMode: 'tanpa', pajakMode: 'tanpa', pembulatan: 0, tampilBayar: true, label: {}, ukuran: 'N', tebal: false, miring: false };
     case 'nomor':   return { id, type, label: 'No. Resi', format: 'TM-{YYYY}{MM}-{seq:4}', tata: 'dua', rata: 'tengah', ukuran: 'N', tebal: true, miring: false };
@@ -1795,7 +1856,7 @@ function presetTemplat(jenis){
     B({ type: 'logo', gambar: null, lebar: 80, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'NOTA', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'nomor', label: 'No. Nota', format: 'N-{YYYY}-{seq:4}', tata: 'satu', rata: 'justify', ukuran: 'N', tebal: true }),
-    B({ type: 'field', baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }], rata: 'kiri', kolom: 1 }),
+    B({ type: 'field', kolom: 1, baris: [{ label: 'Kepada', nilai: '' }, { label: 'Alamat', nilai: '' }, { label: 'Telepon', nilai: '' }] }),
     B({ type: 'tanggal', label: 'Tanggal', format: '{DD}/{MM}/{YYYY}', rata: 'kiri' }),
     B({ type: 'garis', gaya: 'penuh' }),
     B({ type: 'item', kolom: { qty: true, harga: true, subtot: true, satuan: true, diskon: true }, label: { item: 'Item', qty: 'Qty', harga: 'Harga', subtot: 'Subtot', satuan: 'Sat', diskon: 'Diskon' }, header: true }),
@@ -1806,10 +1867,10 @@ function presetTemplat(jenis){
     B({ type: 'teks', isi: 'RESI PENGIRIMAN', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'nomor', label: '', format: 'KIR{YY}{MM}{seq:5}', tata: 'dua', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'field', baris: [
+    B({ type: 'field', kolom: 1, baris: [
       { label: 'Pengirim', nilai: '' }, { label: 'Telp', nilai: '' }, { label: 'Asal', nilai: '' },
       { label: 'Penerima', nilai: '' }, { label: 'Telp', nilai: '' }, { label: 'Tujuan', nilai: '' },
-      { label: 'Berat', nilai: '' }, { label: 'Layanan', nilai: '' }], rata: 'kiri', kolom: 1 }),
+      { label: 'Berat', nilai: '' }, { label: 'Layanan', nilai: '' }] }),
     B({ type: 'garis', gaya: 'putus' }),
     B({ type: 'teks', isi: 'Barang yang sudah diterima dalam kondisi baik. Mohon periksa sebelum menandatangani.', rata: 'kiri', ukuran: 'S', tebal: false }),
     B({ type: 'spasi', baris: 2 }),
@@ -1819,7 +1880,7 @@ function presetTemplat(jenis){
     B({ type: 'logo', gambar: null, lebar: 100, rasio: 0.35, posisi: 'tengah' }),
     B({ type: 'teks', isi: 'JUDUL', rata: 'tengah', ukuran: 'L', tebal: true }),
     B({ type: 'garis', gaya: 'putus' }),
-    B({ type: 'field', baris: [{ label: 'Label', nilai: '' }], rata: 'kiri', kolom: 1 })
+    B({ type: 'field', kolom: 1, baris: [{ label: 'Label', nilai: '' }] })
   ]};
   return { id: uid(), nama: 'Struk Toko', kertas: { lebar: 58 }, font: 'A', seq: 1, blok: [
     B({ type: 'logo', gambar: null, lebar: 100, rasio: 0.35, posisi: 'tengah' }),
@@ -1836,7 +1897,8 @@ function presetTemplat(jenis){
   ]};
 }
 /* migrasi + pembersihan menyeluruh — dipakai untuk data lama
-   DAN untuk berkas impor/cadangan yang tidak dipercaya */
+   DAN untuk berkas impor/cadangan yang tidak dipercaya.
+   V1.12: field data — gaya global lama blok diwariskan ke tiap field. */
 function migrasiTemplat(t){
   if (!t || typeof t !== 'object' || Array.isArray(t)) return null;
   if (typeof t.nama !== 'string') t.nama = 'Templat';
@@ -1858,14 +1920,21 @@ function migrasiTemplat(t){
       b.garisBawah = !!b.garisBawah;
     }
     if (b.type === 'field'){
-      b.rata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
       b.kolom = clampInt(b.kolom || 1, 1, 3);
-      b.ukuran = UKURAN_V.includes(b.ukuran) ? b.ukuran : 'N';
-      b.tebal = !!b.tebal;
-      b.miring = !!b.miring;
+      const blokRata = ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri';
+      const blokUkur = UKURAN_V.includes(b.ukuran) ? b.ukuran : 'N';
+      const blokTebal = !!b.tebal;
+      const blokMiring = !!b.miring;
       b.baris = Array.isArray(b.baris)
         ? b.baris.filter(r => r && typeof r === 'object').slice(0, 30)
-            .map(r => ({ label: String(r.label ?? '').slice(0, 40), nilai: String(r.nilai ?? '').slice(0, 200) }))
+            .map(r => ({
+              label: String(r.label ?? '').slice(0, 40),
+              nilai: String(r.nilai ?? '').slice(0, 200),
+              rata: ['kiri', 'tengah', 'kanan', 'justify'].includes(r.rata) ? r.rata : blokRata,
+              ukuran: UKURAN_V.includes(r.ukuran) ? r.ukuran : blokUkur,
+              tebal: r.tebal === undefined ? blokTebal : !!r.tebal,
+              miring: r.miring === undefined ? blokMiring : !!r.miring
+            }))
         : [];
     }
     if (b.type === 'item'){
@@ -1943,8 +2012,9 @@ function migrasiResi(r){
   o.lines = Array.isArray(r.lines)
     ? r.lines.slice(0, 3000).map(l => {
         if (l && typeof l === 'object' && l.logo) return { logo: true, ref: String(l.ref ?? '').slice(0, 64), wPct: clampInt(num(l.wPct) || 100, 10, 100), rasio: num(l.rasio) || 0.35, pos: posLogo(l.pos) };
-        if (l && typeof l === 'object') return { t: String(l.t ?? '').slice(0, 400), s: UKURAN_V.includes(l.s) ? l.s : 'N', b: !!l.b, u: !!l.u, i: !!l.i, half: !!l.half };
-        return { t: '', s: 'N', b: false, u: false, i: false, half: false };
+        if (l && typeof l === 'object' && l.segs) return { segs: (Array.isArray(l.segs) ? l.segs.slice(0, 4) : []).map(sg => (sg && typeof sg === 'object') ? { t: String(sg.t ?? '').slice(0, 400), s: UKURAN_V.includes(sg.s) ? sg.s : 'N', b: !!sg.b, u: !!sg.u, i: !!sg.i } : { t: '', s: 'N', b: false, u: false, i: false }), h: num(l.h) || 1 };
+        if (l && typeof l === 'object') return { t: String(l.t ?? '').slice(0, 400), s: UKURAN_V.includes(l.s) ? l.s : 'N', b: !!l.b, u: !!l.u, i: !!l.i };
+        return { t: '', s: 'N', b: false, u: false, i: false };
       })
     : [];
   o.data = (r.data && typeof r.data === 'object')
@@ -2012,16 +2082,11 @@ function seg(opsi, nilai, fn){
   }
   return el;
 }
-/* kontrol gaya tulisan seragam — ubah: callback opsional setelah
-   perubahan (dipakai blok field untuk menyegarkan mini pratinjau) */
 function kontrolGaya(tpl, b, { rata = null, ukuran = true, tebal = true, miring = true, garisBawah = false, ubah = null } = {}){
   const wadah = h('div', { style: { display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' } });
   const setelah = () => { if (ubah) ubah(); };
   if (rata) wadah.append(seg(rata, b.rata || 'kiri', v => { b.rata = v; ubahTemplat(tpl); setelah(); }));
-  if (ukuran) wadah.append(seg([
-    { v: 'S', l: 'Kecil' }, { v: 'N', l: 'Normal' }, { v: 'H', l: '2x Tinggi' },
-    { v: 'W', l: '2x Lebar' }, { v: 'L', l: '2x2' }, { v: 'M', l: 'Mega 3x3' }
-  ], b.ukuran && UKURAN_V.includes(b.ukuran) ? b.ukuran : 'N', v => { b.ukuran = v; ubahTemplat(tpl); setelah(); }));
+  if (ukuran) wadah.append(seg(UKURAN_SEG, b.ukuran && UKURAN_V.includes(b.ukuran) ? b.ukuran : 'N', v => { b.ukuran = v; ubahTemplat(tpl); setelah(); }));
   if (tebal) wadah.append(h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.tebal, onchange: e => { b.tebal = e.target.checked; ubahTemplat(tpl); setelah(); } }), 'Tebal'));
   if (miring) wadah.append(h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.miring, onchange: e => { b.miring = e.target.checked; ubahTemplat(tpl); setelah(); } }), 'Miring'));
   if (garisBawah) wadah.append(h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!b.garisBawah, onchange: e => { b.garisBawah = e.target.checked; ubahTemplat(tpl); setelah(); } }), 'Garis bawah'));
@@ -2038,7 +2103,7 @@ function kosongView(judul, sub, aksi){
 function ringkasBlok(b){
   switch (b.type){
     case 'teks':    return (String(b.isi || '').split('\n')[0] || '(kosong)').slice(0, 26);
-    case 'field':   return (b.baris || []).length + ' baris' + (clampInt(b.kolom || 1, 1, 3) > 1 ? ' · ' + clampInt(b.kolom || 1, 1, 3) + ' kolom' : '');
+    case 'field':   return (b.baris || []).length + ' field' + (clampInt(b.kolom || 1, 1, 3) > 1 ? ' · ' + clampInt(b.kolom || 1, 1, 3) + ' kolom' : '');
     case 'item':    return 'tabel item';
     case 'logo':    return b.gambar ? (clampInt(b.lebar || 100, 10, 100) + '% · ' + posLogo(b.posisi)) : 'belum ada gambar';
     case 'total':   return [b.diskonMode !== 'tanpa' ? 'diskon' : null, b.pajakMode !== 'tanpa' ? 'pajak' : null, b.tampilBayar ? 'bayar' : null].filter(Boolean).join(' · ') || 'subtotal saja';
@@ -2137,7 +2202,7 @@ function badanBlok(tpl, b){
       badan.append(
         ta,
         kontrolGaya(tpl, b, { rata: RATA4, garisBawah: true }),
-        h('p', { class: 'bantuan' }, 'Justify: baris dipenuhi sampai tepi kanan; baris terakhir paragraf tetap kiri. 2x2 = Double Size. Mega = 3x3. Miring & Mega di printer tergantung dukungan (pratinjau selalu benar).'));
+        h('p', { class: 'bantuan' }, 'Justify: baris dipenuhi sampai tepi kanan; baris terakhir paragraf tetap kiri. 2x2 = Double Size. Mega = 3x3 (kini benar 3x di printer). Miring & Mega di printer tergantung dukungan (pratinjau selalu benar).'));
       break;
     }
     case 'logo': {
@@ -2177,57 +2242,72 @@ function badanBlok(tpl, b){
     }
     case 'field': {
       b.baris = b.baris || [];
-      if (!b.rata) b.rata = 'kiri';
       if (!b.kolom) b.kolom = 1;
       const wadah = h('div', {});
-      /* --- V1.11: mini pratinjau tata letak — jalur render SAMA
-         dengan kertas (layoutFieldLines), diperbarui seketika. --- */
+      /* mini pratinjau tata letak — jalur render SAMA dengan kertas
+         (fieldBlockLines, gaya per field), diperbarui seketika. */
       const mini = h('div', { class: 'mini-pv' });
       const miniCap = h('div', { class: 'mini-pv-cap' });
       const gambarMini = () => {
         const font = tpl.font === 'B' ? 'B' : 'A';
         const g = gridKertas(tpl.kertas.lebar, font);
-        let uk = UKURAN_V.includes(b.ukuran) ? b.ukuran : 'N';
-        if (font === 'B' && uk === 'S') uk = 'N';
-        const wS = wForOf(g.chars, uk);
-        const barisF = (b.baris || []).map(r => ({ label: r.label, nilai: r.nilai }));
         mini.textContent = '';
-        if (!barisF.length){
-          mini.append(h('div', { class: 'mini-pv-kosong' }, 'Belum ada field — klik "+ Tambah baris"'));
+        if (!(b.baris || []).length){
+          mini.append(h('div', { class: 'mini-pv-kosong' }, 'Belum ada field — klik "+ Tambah field"'));
           miniCap.textContent = '';
           return;
         }
-        const fl = layoutFieldLines(b, barisF, wS);
-        for (const t of fl.lines) mini.append(h('div', { class: 'mini-pv-line' }, t === '' ? '\u00A0' : t));
+        const ls = fieldBlockLines(b, b.baris, g.chars, font);
+        const fs = ln => ln.s === 'S' ? '0.75em' : ln.s === 'L' ? '2em' : ln.s === 'M' ? '3em' : '1em';
+        for (const ln of ls){
+          const dv = h('div', { class: 'mini-pv-line' });
+          if (ln.segs){
+            for (const sg of ln.segs){
+              const sp = h('span', { style: { fontSize: fs(sg), fontWeight: sg.b ? '700' : '400', fontStyle: sg.i ? 'italic' : 'normal' } });
+              sp.textContent = sg.t === '' ? '\u00A0' : sg.t;
+              dv.append(sp);
+            }
+          } else {
+            dv.style.fontSize = fs(ln);
+            dv.style.fontWeight = ln.b ? '700' : '400';
+            dv.style.fontStyle = ln.i ? 'italic' : 'normal';
+            dv.textContent = ln.t === '' ? '\u00A0' : ln.t;
+          }
+          mini.append(dv);
+        }
         const k = clampInt(b.kolom || 1, 1, 3);
-        let cap = 'Kertas ' + tpl.kertas.lebar + 'mm · ' + g.chars + ' karakter/baris · ';
-        cap += fl.multi ? (k + ' KOLOM field per baris') : ('1 kolom field per baris' + (k >= 2 ? ' (otomatis — kolom terlalu sempit untuk ukuran/gaya ini)' : ''));
-        if (fl.multi && barisF.length < k)
-          cap += ' — PERHATIAN: baru ' + barisF.length + ' field; tambah hingga ' + k + ' field agar ' + k + ' kolom terisi penuh';
+        let cap = 'Kertas ' + tpl.kertas.lebar + 'mm · ' + g.chars + ' karakter · ' + k + ' FIELD per baris — setiap field bergaya sendiri';
+        if (b.baris.length < k) cap += ' — baru ' + b.baris.length + ' field; tambah ' + (k - b.baris.length) + ' lagi agar ' + k + ' kolom terisi penuh';
         miniCap.textContent = cap;
       };
       const kepalaPerbarui = () => { const k = wadah.closest('.blk'); if (k){ const s = k.querySelector('.blk-s'); if (s) s.textContent = ringkasBlok(b); } };
       const gambar = () => {
         wadah.textContent = '';
         b.baris.forEach((r, idx) => {
+          const kartu = h('div', { class: 'field-card' });
           const inpL = h('input', { class: 'inp', maxlength: 40, value: r.label, placeholder: 'Label (mis. Nama:)' });
           inpL.addEventListener('input', e => { r.label = e.target.value; ubahTemplat(tpl); kepalaPerbarui(); gambarMini(); });
           const inpN = h('input', { class: 'inp', maxlength: 200, value: r.nilai, placeholder: 'Nilai awal' });
           inpN.addEventListener('input', e => { r.nilai = e.target.value; ubahTemplat(tpl); gambarMini(); });
-          wadah.append(h('div', { class: 'baris-f' }, inpL, inpN,
-            h('button', { class: 'btn ic d sm', title: 'Hapus baris', onclick: () => { b.baris.splice(idx, 1); ubahTemplat(tpl); renderDesain(); } }, ikonEl('silang', 14))));
+          kartu.append(
+            h('div', { class: 'baris-f' }, inpL, inpN,
+              h('button', { class: 'btn ic d sm', title: 'Hapus field', onclick: () => { b.baris.splice(idx, 1); ubahTemplat(tpl); renderDesain(); } }, ikonEl('silang', 14))),
+            h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
+              seg(RATA4, r.rata || 'kiri', v => { r.rata = v; ubahTemplat(tpl); gambarMini(); }),
+              seg(UKURAN_SEG, UKURAN_V.includes(r.ukuran) ? r.ukuran : 'N', v => { r.ukuran = v; ubahTemplat(tpl); gambarMini(); }),
+              h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!r.tebal, onchange: e => { r.tebal = e.target.checked; ubahTemplat(tpl); gambarMini(); } }), 'Tebal'),
+              h('label', { class: 'cek', style: { margin: 0 } }, h('input', { type: 'checkbox', checked: !!r.miring, onchange: e => { r.miring = e.target.checked; ubahTemplat(tpl); gambarMini(); } }), 'Miring')));
+          wadah.append(kartu);
         });
       };
       gambar();
       gambarMini();
       badan.append(
-        L('Perataan', seg(RATA4, b.rata, v => { b.rata = v; ubahTemplat(tpl); gambarMini(); })),
-        L('Tata letak (jumlah FIELD per baris di kertas)', seg([{ v: 1, l: '1 Kolom' }, { v: 2, l: '2 Kolom' }, { v: 3, l: '3 Kolom' }], clampInt(b.kolom, 1, 3), v => { b.kolom = v; ubahTemplat(tpl); gambarMini(); })),
-        L('Gaya tulisan', kontrolGaya(tpl, b, { ubah: gambarMini })),
+        L('Tata letak — jumlah FIELD per baris (selalu mengikuti pilihan)', seg([{ v: 1, l: '1 Kolom' }, { v: 2, l: '2 Kolom' }, { v: 3, l: '3 Kolom' }], clampInt(b.kolom, 1, 3), v => { b.kolom = v; ubahTemplat(tpl); gambarMini(); })),
         L('Pratinjau tata letak (persis seperti kertas)', mini, miniCap),
         wadah,
-        h('button', { class: 'tambah-item', onclick: () => { b.baris.push({ label: 'Label', nilai: '' }); ubahTemplat(tpl); renderDesain(); } }, '+ Tambah baris'),
-        h('p', { class: 'bantuan' }, 'PENTING: "Kolom" = jumlah FIELD per baris di kertas — satu field = label + nilainya (tetap satu kesatuan satu baris). 1 Kolom = satu field per baris; 2/3 Kolom = beberapa field sebaris dan BUTUH minimal sebanyak kolomnya (dengan 2 field, mode 3 Kolom hanya mengisi 2 kolom). Titik dua tidak otomatis — ketik di label. Kotak pratinjau di atas diperbaruh seketika dan identik dengan hasil cetak.'));
+        h('button', { class: 'tambah-item', onclick: () => { b.baris.push({ label: 'Label', nilai: '', rata: 'kiri', ukuran: 'N', tebal: false, miring: false }); ubahTemplat(tpl); renderDesain(); } }, '+ Tambah field'),
+        h('p', { class: 'bantuan' }, 'GAYA PER FIELD: setiap field punya rata/ukuran/tebal/miring sendiri (contoh: field 1 kiri, field 2 tengah, field 3 kanan — bahkan dalam satu baris). Jumlah kolom SELALU mengikuti pilihan Anda, berapa pun lebar kertas; dengan 2 field, mode 3 Kolom hanya mengisi 2 kolom. Titik dua tidak otomatis — ketik di label. Ukuran besar di kertas sempit membuat sel sempit dan teks bisa terpotong (konsekuensi menghormati pilihan).'));
       break;
     }
     case 'item': {
@@ -2244,11 +2324,11 @@ function badanBlok(tpl, b){
           cekKolom('qty', 'Qty'), cekKolom('satuan', 'Satuan'), cekKolom('harga', 'Harga'),
           cekKolom('diskon', 'Diskon/item'), cekKolom('subtot', 'Subtotal'),
           h('label', { class: 'cek' }, h('input', { type: 'checkbox', checked: b.header !== false, onchange: e => { b.header = e.target.checked; ubahTemplat(tpl); } }), 'Kepala tabel')),
-        L('Gaya tulisan', kontrolGaya(tpl, b, {})),
+        L('Gaya tulisan (seluruh tabel)', kontrolGaya(tpl, b, {})),
         h('div', { class: 'grid2' },
           inpLabel('item', 'Item'), inpLabel('qty', 'Qty'), inpLabel('harga', 'Harga'),
           inpLabel('subtot', 'Subtot'), inpLabel('satuan', 'Sat'), inpLabel('diskon', 'Diskon')),
-        h('p', { class: 'bantuan' }, 'Ukuran besar menskala seluruh grid tabel (kolom tetap sejajar) — kolom menyempit; Kecil melegakannya. Hindari Mega bila nama item/kolom panjang.'));
+        h('p', { class: 'bantuan' }, 'Ukuran besar menskala seluruh grid tabel (kolom tetap sejajar). Hindari Mega bila nama item/kolom panjang.'));
       break;
     }
     case 'total': {
@@ -2286,7 +2366,7 @@ function badanBlok(tpl, b){
           seg(RATA4, ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'tengah', v => { b.rata = v; ubahTemplat(tpl); })),
         h('div', {}, h('span', { class: 'lbl' }, 'Nomor urut berikutnya'), inpSeq),
         L('Gaya tulisan', kontrolGaya(tpl, b, {})),
-        h('p', { class: 'bantuan' }, 'Perataan berlaku di kedua mode. 1 Baris + Justify = label kiri, nomor kanan; 1 Baris + Tengah/Kiri/Kanan = label & nomor sebaris mengikuti perataan. 2 Baris + Justify = label rata kiri, nomor rata kanan. Bila 1 baris tak muat, otomatis 2 baris. Nomor urut naik +1 tiap resi disimpan; bisa diedit manual.'));
+        h('p', { class: 'bantuan' }, 'Perataan berlaku di kedua mode. 1 Baris + Justify = label kiri, nomor kanan. Bila 1 baris tak muat, otomatis 2 baris. Nomor urut naik +1 tiap resi disimpan; bisa diedit manual.'));
       break;
     }
     case 'tanggal': {
@@ -2299,14 +2379,13 @@ function badanBlok(tpl, b){
         h('div', {}, h('span', { class: 'lbl' }, 'Format'), inpF),
         h('div', {}, h('span', { class: 'lbl' }, 'Perataan'), seg(RATA4, ['kiri', 'tengah', 'kanan', 'justify'].includes(b.rata) ? b.rata : 'kiri', v => { b.rata = v; ubahTemplat(tpl); })),
         L('Gaya tulisan', kontrolGaya(tpl, b, {})),
-        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date()) + '. Titik dua tidak otomatis — ketik di label (mis. "Tanggal:") bila ingin. Justify: label kiri, tanggal kanan (jatuh ke kiri bila tidak muat).'));
+        h('p', { class: 'bantuan' }, 'Contoh: {DD}/{MM}/{YYYY} {HH}:{mm} → ' + tokenisasi(b.format || '', 0, new Date()) + '. Titik dua tidak otomatis — ketik di label bila ingin. Justify: label kiri, tanggal kanan (jatuh ke kiri bila tidak muat).'));
       break;
     }
     case 'garis':
       badan.append(L('Gaya', seg([{ v: 'putus', l: 'Putus-putus' }, { v: 'penuh', l: 'Penuh' }, { v: 'ganda', l: 'Ganda' }], b.gaya || 'putus', v => { b.gaya = v; ubahTemplat(tpl); })));
       break;
     case 'spasi': {
-      /* V1.11: langkah 0,5 — 0,5 = baris setengah-tinggi. */
       const inp = h('input', { class: 'inp', type: 'number', min: 0, max: 20, step: 0.5, value: halfStep(b.baris), style: { width: '90px' }, title: 'Kelipatan 0,5 (0–20)' });
       inp.addEventListener('change', e => {
         const v = halfStep(e.target.value);
@@ -2318,7 +2397,7 @@ function badanBlok(tpl, b){
             seg([{ v: 0.5, l: '0,5' }, { v: 1, l: '1' }, { v: 1.5, l: '1,5' }, { v: 2, l: '2' }, { v: 3, l: '3' }], halfStep(b.baris), v => { b.baris = v; inp.value = String(v); ubahTemplat(tpl); }),
             h('span', { class: 'sub' }, 'Kustom:'),
             inp)),
-        h('p', { class: 'bantuan' }, '0,5 = setengah tinggi baris normal — untuk jarak rapat antar elemen. Di pratinjau & dialog cetak tampil sebagai baris setengah-tinggi sesungguhnya; di printer (ESC/POS) didekati dengan spasi baris 18/216 inci (perintah ESC 3) lalu dikembalikan ke default — hasil sangat mendekati setengah baris.'));
+        h('p', { class: 'bantuan' }, '0,5 = setengah tinggi baris normal. Di pratinjau & dialog cetak tampil sebagai baris setengah-tinggi; di printer didekati ESC 3 (spasi 18/216 inci) lalu reset.'));
       break;
     }
     case 'ttd': {
@@ -3054,7 +3133,7 @@ function renderSetelan(){
     L('Baris umpan sebelum potong', seg([{ v: 0, l: '0' }, { v: 2, l: '2' }, { v: 4, l: '4' }, { v: 6, l: '6' }], clampInt(c.umpan, 0, 20), v => { c.umpan = v; tandaiKotor('setelan'); })),
     h('label', { class: 'cek' }, h('input', { type: 'checkbox', checked: !!c.laci, onchange: e => { c.laci = e.target.checked; tandaiKotor('setelan'); } }), 'Buka laci kasir setelah mencetak'),
     dukung.ser() ? L('Kecepatan serial (baud)', seg([{ v: 9600, l: '9600' }, { v: 19200, l: '19200' }, { v: 57600, l: '57600' }, { v: 115200, l: '115200' }], num(c.baud) || 9600, v => { c.baud = v; tandaiKotor('setelan'); })) : null,
-    h('p', { class: 'bantuan' }, 'Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font A/B, tebal, garis bawah, miring, ukuran 2x/2x2/Mega, spasi 0,5, dan logo — persis seperti pratinjau (miring & Mega tergantung dukungan printer). Catatan: Bluetooth hanya untuk perangkat BLE; printer Bluetooth klasik (SPP) dan printer LAN/IP tidak dapat dihubungi browser — gunakan jalur Printer Sistem. Di Windows, USB dapat gagal bila printer sedang dikunci driver sistem. Pastikan lebar templat sama dengan printer fisik (58/80mm).')));
+    h('p', { class: 'bantuan' }, 'Cetak langsung mengirim ESC/POS mentah: potong kertas otomatis, font A/B, tebal, garis bawah, miring, ukuran 2x/2x2/Mega 3x3, spasi 0,5, baris multi-gaya (field), dan logo — persis seperti pratinjau (miring & Mega tergantung dukungan printer). Catatan: Bluetooth hanya untuk perangkat BLE; printer Bluetooth klasik (SPP) dan printer LAN/IP tidak dapat dihubungi browser — gunakan jalur Printer Sistem. Di Windows, USB dapat gagal bila printer sedang dikunci driver sistem. Pastikan lebar templat sama dengan printer fisik (58/80mm).')));
 
   const sekDev = h('div', { class: 'sek' }, h('p', { class: 'sek-t' }, 'PERANGKAT CETAK'));
   const daftarDev = [
